@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_04fko40" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.6.0">
+  <bpmn:process id="External" name="External task example" isExecutable="true">
+    <bpmn:sequenceFlow id="Flow_1fyal6n" sourceRef="StartEvent_1" targetRef="Activity_0c6f7ld" />
+    <bpmn:endEvent id="Event_1hoxror" name="Completed">
+      <bpmn:incoming>Flow_1oviitc</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1oviitc" sourceRef="Activity_0k987wc" targetRef="Event_1hoxror" />
+    <bpmn:serviceTask id="Activity_0k987wc" name="Double Value" camunda:type="external" camunda:topic="number-topic">
+      <bpmn:incoming>Flow_1nempqc</bpmn:incoming>
+      <bpmn:outgoing>Flow_1oviitc</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:startEvent id="StartEvent_1" name="Every second">
+      <bpmn:outgoing>Flow_1fyal6n</bpmn:outgoing>
+      <bpmn:timerEventDefinition id="TimerEventDefinition_15x6eh3">
+        <bpmn:timeCycle xsi:type="bpmn:tFormalExpression">* * * * * ?</bpmn:timeCycle>
+      </bpmn:timerEventDefinition>
+    </bpmn:startEvent>
+    <bpmn:boundaryEvent id="Wait_Event" name="Ten seconds" attachedToRef="Activity_0k987wc">
+      <bpmn:outgoing>Flow_167gzln</bpmn:outgoing>
+      <bpmn:timerEventDefinition id="TimerEventDefinition_0zk572t">
+        <bpmn:timeDuration xsi:type="bpmn:tFormalExpression">PT10S</bpmn:timeDuration>
+      </bpmn:timerEventDefinition>
+    </bpmn:boundaryEvent>
+    <bpmn:endEvent id="Event_18awxm2" name="Cancelled">
+      <bpmn:incoming>Flow_167gzln</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_167gzln" sourceRef="Wait_Event" targetRef="Event_18awxm2" />
+    <bpmn:sequenceFlow id="Flow_1nempqc" sourceRef="Activity_0c6f7ld" targetRef="Activity_0k987wc" />
+    <bpmn:serviceTask id="Activity_0c6f7ld" name="Create Random Number" camunda:delegateExpression="${createRandomNumber}">
+      <bpmn:incoming>Flow_1fyal6n</bpmn:incoming>
+      <bpmn:outgoing>Flow_1nempqc</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:textAnnotation id="TextAnnotation_0ctn6i4">
+      <bpmn:text>This makes sure that we don't have more than two instances running if the job executor runs every five seconds (default)</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_0c6wf8f" sourceRef="Wait_Event" targetRef="TextAnnotation_0ctn6i4" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="External">
+      <bpmndi:BPMNShape id="TextAnnotation_0ctn6i4_di" bpmnElement="TextAnnotation_0ctn6i4">
+        <dc:Bounds x="310" y="270" width="250" height="54" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_167gzln_di" bpmnElement="Flow_167gzln">
+        <di:waypoint x="490" y="175" />
+        <di:waypoint x="490" y="240" />
+        <di:waypoint x="582" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1oviitc_di" bpmnElement="Flow_1oviitc">
+        <di:waypoint x="520" y="117" />
+        <di:waypoint x="582" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1fyal6n_di" bpmnElement="Flow_1fyal6n">
+        <di:waypoint x="208" y="117" />
+        <di:waypoint x="260" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1nempqc_di" bpmnElement="Flow_1nempqc">
+        <di:waypoint x="360" y="117" />
+        <di:waypoint x="420" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Event_1hoxror_di" bpmnElement="Event_1hoxror">
+        <dc:Bounds x="582" y="99" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="574" y="142" width="54" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_009lntw_di" bpmnElement="Activity_0k987wc">
+        <dc:Bounds x="420" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_18awxm2_di" bpmnElement="Event_18awxm2">
+        <dc:Bounds x="582" y="222" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="576" y="265" width="49" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0stv9k6_di" bpmnElement="StartEvent_1">
+        <dc:Bounds x="172" y="99" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="158" y="142" width="67" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1vbzrnf_di" bpmnElement="Activity_0c6f7ld">
+        <dc:Bounds x="260" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Association_0c6wf8f_di" bpmnElement="Association_0c6wf8f">
+        <di:waypoint x="477" y="169" />
+        <di:waypoint x="371" y="270" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Event_1ohalvo_di" bpmnElement="Wait_Event">
+        <dc:Bounds x="472" y="139" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="499" y="182" width="62" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

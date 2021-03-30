@@ -1,0 +1,34 @@
+plugins {
+    id("com.github.johnrengelman.shadow")
+    id("io.micronaut.application")
+}
+
+group = "info.novatec"
+
+micronaut {
+    runtime("jetty")
+    testRuntime("junit5")
+    processing {
+        incremental(true)
+        annotations("info.novatec.micronaut.camunda.application.*")
+    }
+}
+
+dependencies {
+    implementation("info.novatec:micronaut-camunda-bpm-feature:2.0.0")
+    runtimeOnly("com.h2database:h2")
+
+    implementation("io.micronaut:micronaut-http-client")
+    implementation("io.micronaut:micronaut-runtime")
+    implementation("javax.annotation:javax.annotation-api")
+    implementation("io.micronaut:micronaut-validation")
+    runtimeOnly("ch.qos.logback:logback-classic")
+}
+
+application {
+    mainClass.set("info.novatec.micronaut.camunda.application.ServerApplication")
+}
+java {
+    sourceCompatibility = JavaVersion.toVersion("1.8")
+    targetCompatibility = JavaVersion.toVersion("1.8")
+}

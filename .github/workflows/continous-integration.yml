@@ -1,0 +1,35 @@
+# This workflow will build a Java project with Gradle
+# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-gradle
+
+name: Continuous Integration
+
+on:
+  push:
+    branches: [ '**' ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include: #Support LTS releases 8 and 11 and the latest release supported by Micronaut.
+          - java: '8'
+            gradle_args: ''
+          - java: '11'
+            gradle_args: '-Dorg.gradle.jvmargs=--illegal-access=permit'
+          - java: '16'
+            gradle_args: '-Dorg.gradle.jvmargs=--illegal-access=permit'
+
+    steps:
+      - name: Git Checkout
+        uses: actions/checkout@v2
+      - name: Set up JDKs with Matrix Build
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'zulu'
+          java-version: ${{ matrix.java }}
+          cache: 'gradle'
+      - name: Build with Gradle Wrapper
+        run: ./gradlew build --warning-mode=all ${{ matrix.gradle_args }}

@@ -1,0 +1,32 @@
+plugins {
+    id("com.github.johnrengelman.shadow")
+    id("io.micronaut.application")
+}
+
+group = "info.novatec"
+
+micronaut {
+    runtime("netty")
+    testRuntime("junit5")
+    processing {
+        incremental(true)
+        annotations("micronaut.camunda.bpm.externaltask.worker.*")
+    }
+}
+
+dependencies {
+    implementation(project(":micronaut-camunda-external-client-feature"))
+
+    implementation("io.micronaut:micronaut-runtime")
+    implementation("javax.annotation:javax.annotation-api")
+    runtimeOnly("ch.qos.logback:logback-classic")
+}
+
+application {
+    mainClass.set("info.novatec.micronaut.camunda.external.client.example.ExternalTaskWorkerApplication")
+}
+
+java {
+    sourceCompatibility = JavaVersion.toVersion("1.8")
+    targetCompatibility = JavaVersion.toVersion("1.8")
+}

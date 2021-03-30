@@ -1,0 +1,20 @@
+micronaut:
+  application:
+    name: micronaut-camunda-external-client-feature-test
+camunda:
+  external-client:
+    base-url: http://localhost:8080/engine-rest
+    worker-id: test-worker
+    subscriptions:
+      test-topic-annotation:
+        lock-duration: 54321
+        variables:
+          - annotation-overwritten-one
+          - annotation-overwritten-two
+        local-variables: false
+      test-topic-configuration:
+        lock-duration: 30000
+        variables:
+          - var-one
+          - var-two
+        local-variables: true

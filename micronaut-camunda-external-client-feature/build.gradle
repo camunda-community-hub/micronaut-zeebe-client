@@ -1,0 +1,97 @@
+plugins {
+    id ("io.micronaut.library")
+    id("org.jetbrains.kotlin.jvm")
+    id("org.jetbrains.kotlin.kapt")
+    id("org.jetbrains.kotlin.plugin.allopen")
+    id("maven-publish")
+    id("signing")
+}
+
+group "info.novatec"
+
+micronaut {
+    testRuntime("junit5")
+    processing {
+        incremental(true)
+        annotations("micronaut.camunda.external.client.feature.*")
+    }
+}
+
+dependencies {
+    implementation("io.micronaut:micronaut-runtime")
+
+    api("org.camunda.bpm:camunda-external-task-client:$camundaVersion")
+    api("com.sun.xml.bind:jaxb-impl:$jaxbImpl")
+
+    runtimeOnly("ch.qos.logback:logback-classic")
+
+    kaptTest platform("io.micronaut:micronaut-bom:$micronautVersion")
+    kapt("io.micronaut:micronaut-inject-java:$micronautVersion")
+    testImplementation("io.micronaut.test:micronaut-test-junit5")
+    testImplementation("org.assertj:assertj-core")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
+}
+
+java {
+    sourceCompatibility = JavaVersion.toVersion('1.8')
+    targetCompatibility = JavaVersion.toVersion('1.8')
+}
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+tasks {
+    compileTestKotlin {
+        kotlinOptions {
+            jvmTarget = "1.8"
+        }
+    }
+}
+
+// based on https://docs.gradle.org/current/userguide/publishing_maven.html#sec:modifying_the_generated_pom and https://central.sonatype.org/pages/requirements.html#sufficient-metadata
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            pom {
+                name = 'micronaut-camunda-external-client-feature'
+                description = 'Camunda External Client for Micronaut'
+                url = 'https://github.com/camunda-community-hub/micronaut-camunda-external-client'
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'https://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        name = 'The micronaut-camunda Team at Novatec Consulting GmbH'
+                        email = 'micronaut-camunda@novatec-gmbh.de'
+                        organization = 'Novatec Consulting GmbH'
+                        organizationUrl = 'https://www.novatec-gmbh.de'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:https://github.com/camunda-community-hub/micronaut-camunda-external-client.git'
+                    developerConnection = 'scm:git:https://github.com/camunda-community-hub/micronaut-camunda-external-client.git'
+                    url = 'https://github.com/camunda-community-hub/micronaut-camunda-external-client'
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            url = version.endsWith('SNAPSHOT') ? 'https://oss.sonatype.org/content/repositories/snapshots/' : 'https://oss.sonatype.org/service/local/staging/deploy/maven2'
+            credentials {
+                username 'micronaut-camunda'
+                password "$System.env.OSSRH_PWD"
+            }
+        }
+    }
+}
+
+// see https://docs.gradle.org/current/userguide/signing_plugin.html#sec:specifying_what_to_sign and https://central.sonatype.org/pages/working-with-pgp-signatures.html#generating-a-key-pair
+signing {
+    sign publishing.publications.mavenJava
+}

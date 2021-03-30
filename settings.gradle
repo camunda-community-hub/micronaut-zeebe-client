@@ -1,0 +1,15 @@
+pluginManagement {
+    plugins {
+        id("org.jetbrains.kotlin.jvm") version "$kotlinVersion"
+        id("org.jetbrains.kotlin.kapt") version "$kotlinVersion"
+        id("org.jetbrains.kotlin.plugin.allopen") version "$kotlinVersion"
+        id("com.github.johnrengelman.shadow") version "$shadowJarVersion"
+        id("io.micronaut.application") version "$micronautApplicationPluginVersion"
+        id("io.micronaut.library") version "$micronautLibraryPluginVersion"
+    }
+}
+
+rootProject.name = 'micronaut-camunda-external-client'
+include 'micronaut-camunda-external-client-feature'
+include 'micronaut-camunda-external-client-example'
+include 'micronaut-camunda-server-example'
