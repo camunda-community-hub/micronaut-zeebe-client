@@ -17,9 +17,9 @@ package info.novatec.micronaut.zeebe.client.example;
 
 import io.micronaut.runtime.Micronaut;
 
-public class ExternalTaskWorkerApplication {
+public class ZeebeApplication {
 
     public static void main(String[] args) {
-        Micronaut.run(ExternalTaskWorkerApplication.class, args);
+        Micronaut.run(ZeebeApplication.class, args);
     }
 }

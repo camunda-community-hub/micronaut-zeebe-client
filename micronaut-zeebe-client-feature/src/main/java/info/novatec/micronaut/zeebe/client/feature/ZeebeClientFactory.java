@@ -15,7 +15,10 @@
  */
 package info.novatec.micronaut.zeebe.client.feature;
 
+import io.camunda.zeebe.client.ZeebeClient;
+import io.camunda.zeebe.client.ZeebeClientBuilder;
 import io.micronaut.context.annotation.Factory;
+import jakarta.inject.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,8 +29,22 @@ import org.slf4j.LoggerFactory;
  * @author Tobias Schäfer
  */
 @Factory
-public class ExternalTaskClientFactory {
+public class ZeebeClientFactory {
 
-    private static final Logger log = LoggerFactory.getLogger(ExternalTaskClientFactory.class);
+    private static final Logger log = LoggerFactory.getLogger(ZeebeClientFactory.class);
+
+    @Singleton
+    ZeebeClient buildClient(Configuration configuration) {
+
+        ZeebeClientBuilder clientBuilder = ZeebeClient.newClientBuilder();
+
+        // TODO: Configuration
+
+        ZeebeClient client = clientBuilder.build();
+
+        log.info("ZeebeClient connected to {} and ready to process tasks", client.getConfiguration().getGatewayAddress());
+
+        return client;
+    }
 
 }
