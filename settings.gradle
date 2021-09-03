@@ -9,7 +9,7 @@ pluginManagement {
     }
 }
 
-rootProject.name = 'micronaut-camunda-external-client'
-include 'micronaut-camunda-external-client-feature'
-include 'micronaut-camunda-external-client-example'
+rootProject.name = 'micronaut-zeebe-client'
+include 'micronaut-zeebe-client-feature'
+include 'micronaut-zeebe-client-example'
 include 'micronaut-zeebe-server-example'

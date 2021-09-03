@@ -15,7 +15,7 @@ micronaut {
 }
 
 dependencies {
-    implementation(project(":micronaut-camunda-external-client-feature"))
+    implementation(project(":micronaut-zeebe-client-feature"))
 
     implementation("io.micronaut:micronaut-runtime")
     implementation("javax.annotation:javax.annotation-api")
