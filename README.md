@@ -111,7 +111,7 @@ camunda.external-client:
 ```
 Example handler:
 ```java 
-import info.novatec.micronaut.zeebe.client.feature.ExternalTaskSubscription;
+import info.novatec.micronaut.zeebe.client.feature.ZeebeWorker;
 import jakarta.inject.Inject;
 import org.camunda.bpm.client.task.ExternalTask;
 import org.camunda.bpm.client.task.ExternalTaskHandler;

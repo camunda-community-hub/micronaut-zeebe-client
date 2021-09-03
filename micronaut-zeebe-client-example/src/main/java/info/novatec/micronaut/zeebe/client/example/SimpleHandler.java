@@ -15,7 +15,10 @@
  */
 package info.novatec.micronaut.zeebe.client.example;
 
-import info.novatec.micronaut.zeebe.client.feature.ExternalTaskSubscription;
+import info.novatec.micronaut.zeebe.client.feature.ZeebeWorker;
+import io.camunda.zeebe.client.api.response.ActivatedJob;
+import io.camunda.zeebe.client.api.worker.JobClient;
+import io.camunda.zeebe.client.api.worker.JobHandler;
 import jakarta.inject.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,13 +29,17 @@ import org.slf4j.LoggerFactory;
  * @author Stephan Seelig
  * @author Tobias Schäfer
  *
- * This is an example handler on how to build an ExternalTaskHandler. You can register multiple handlers for different
- * topics.
+ * This is an example handler on how to build an JobHandler. You can register multiple handlers for different
+ * types.
  */
 @Singleton
-@ExternalTaskSubscription(topicName = "number-topic")
-public class SimpleHandler {
+@ZeebeWorker(type = "number-type")
+public class SimpleHandler implements JobHandler {
 
     private static final Logger log = LoggerFactory.getLogger(SimpleHandler.class);
 
+    @Override
+    public void handle(JobClient client, ActivatedJob job) {
+        log.info("Hello world {}", job.getKey());
+    }
 }

@@ -15,19 +15,30 @@
  */
 package info.novatec.micronaut.zeebe.client.feature;
 
-import io.micronaut.context.annotation.Context;
+import io.micronaut.context.annotation.Requires;
+import io.micronaut.context.event.ApplicationEventListener;
+import io.micronaut.context.event.StartupEvent;
+import io.micronaut.runtime.server.EmbeddedServer;
+import jakarta.inject.Singleton;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.lang.management.ManagementFactory;
 
 /**
  * @author Martin Sawilla
  * @author Stefan Schultz
  * @author Stephan Seelig
  * @author Tobias Schäfer
- *
- * Allows to configure an external task worker with the {@link ExternalTaskSubscription} annotation. This allows to easily build
- * external workers for multiple topics.
  */
-@Context
-public class ExternalWorkerSubscriptionCreator {
+@Requires(missingBeans = EmbeddedServer.class)
+@Singleton
+public class ZeebeClientStartupTime implements ApplicationEventListener<StartupEvent> {
 
+    private static final Logger log = LoggerFactory.getLogger(ZeebeClientStartupTime.class);
+
+    @Override
+    public void onApplicationEvent(StartupEvent event) {
+        log.info("Application started in {} ms", ManagementFactory.getRuntimeMXBean().getUptime());
+    }
 }

@@ -21,35 +21,14 @@ import java.lang.annotation.Target;
 
 /**
  * @author Martin Sawilla
+ * @author Stefan Schultz
+ * @author Stephan Seelig
+ * @author Tobias Schäfer
  */
 @Target(ElementType.TYPE)
 @Documented
-public @interface ExternalTaskSubscription {
+public @interface ZeebeWorker {
 
-    String topicName();
-
-    long lockDuration() default 20000;
-
-    String[] variables() default "";
-
-    boolean localVariables() default false;
-
-    String businessKey() default "";
-
-    String processDefinitionId() default "";
-
-    String[] processDefinitionIdIn() default "";
-
-    String processDefinitionKey() default "";
-
-    String[] processDefinitionKeyIn() default "";
-
-    String processDefinitionVersionTag() default "";
-
-    boolean withoutTenantId() default false;
-
-    String[] tenantIdIn() default "";
-
-    boolean includeExtensionProperties() default false;
+    String type();
 
 }

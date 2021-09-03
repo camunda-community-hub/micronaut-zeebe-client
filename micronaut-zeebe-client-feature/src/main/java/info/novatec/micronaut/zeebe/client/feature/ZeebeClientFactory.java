@@ -40,7 +40,9 @@ public class ZeebeClientFactory {
 
         // TODO: Configuration
 
-        ZeebeClient client = clientBuilder.build();
+        ZeebeClient client = clientBuilder
+                .usePlaintext()
+                .build();
 
         log.info("ZeebeClient connected to {} and ready to process tasks", client.getConfiguration().getGatewayAddress());
 
