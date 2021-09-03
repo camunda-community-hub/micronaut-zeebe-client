@@ -1,9 +1,0 @@
-micronaut:
-  application:
-    name: micronaut-camunda-bpm-application
-camunda:
-  admin-user:
-    id: admin
-    password: admin
-  rest:
-    enabled: true

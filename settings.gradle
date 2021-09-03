@@ -12,4 +12,4 @@ pluginManagement {
 rootProject.name = 'micronaut-camunda-external-client'
 include 'micronaut-camunda-external-client-feature'
 include 'micronaut-camunda-external-client-example'
-include 'micronaut-camunda-server-example'
+include 'micronaut-zeebe-server-example'
