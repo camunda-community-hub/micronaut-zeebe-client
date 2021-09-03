@@ -1,12 +1,12 @@
-# micronaut-camunda-external-client-example
+# micronaut-zeebe-client-example
 
 This example shows how to apply the external task pattern: the server with a BPMN process will create tasks which will be executed by an external task client.
 
-First start the server, see [micronaut-camunda-server-example](/micronaut-camunda-server-example).
+First start the server, see [micronaut-zeebe-server-example](/micronaut-zeebe-server-example).
 
 Start Client:
 
-`./gradlew run -p micronaut-camunda-external-client-example`
+`./gradlew run -p micronaut-zeebe-client-example`
 
 This will output something like:
 

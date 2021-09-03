@@ -1,7 +1,4 @@
 micronaut:
   application:
-    name: micronaut-camunda-external-client-example
-  server:
-    port: 8888
-camunda.external-client:
-  base-url: http://localhost:8080/engine-rest
+    name: micronaut-zeebe-client-example
+

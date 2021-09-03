@@ -23,7 +23,7 @@ dependencies {
 }
 
 application {
-    mainClass.set("info.novatec.micronaut.camunda.external.client.example.ExternalTaskWorkerApplication")
+    mainClass.set("info.novatec.micronaut.zeebe.client.example.ExternalTaskWorkerApplication")
 }
 
 java {

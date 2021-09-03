@@ -54,9 +54,9 @@ publishing {
         mavenJava(MavenPublication) {
             from components.java
             pom {
-                name = 'micronaut-camunda-external-client-feature'
-                description = 'Camunda External Client for Micronaut'
-                url = 'https://github.com/camunda-community-hub/micronaut-camunda-external-client'
+                name = 'micronaut-zeebe-client-feature'
+                description = 'Zeebe Client for Micronaut'
+                url = 'https://github.com/NovatecConsulting/micronaut-zeebe-client'
                 licenses {
                     license {
                         name = 'The Apache License, Version 2.0'
@@ -72,9 +72,9 @@ publishing {
                     }
                 }
                 scm {
-                    connection = 'scm:git:https://github.com/camunda-community-hub/micronaut-camunda-external-client.git'
-                    developerConnection = 'scm:git:https://github.com/camunda-community-hub/micronaut-camunda-external-client.git'
-                    url = 'https://github.com/camunda-community-hub/micronaut-camunda-external-client'
+                    connection = 'scm:git:https://github.com/NovatecConsulting/micronaut-zeebe-client.git'
+                    developerConnection = 'scm:git:https://github.com/NovatecConsulting/micronaut-zeebe-client.git'
+                    url = 'https://github.com/NovatecConsulting/micronaut-zeebe-client'
                 }
             }
         }

@@ -1,4 +1,4 @@
-# micronaut-camunda-external-client
+# micronaut-zeebe-client
 
 This open source project allows you to easily integrate [Camunda](https://camunda.com/products/bpmn-engine) 's [External Task Clients](https://docs.camunda.org/manual/latest/user-guide/process-engine/external-tasks/) into [Micronaut](https://micronaut.io) projects.
 
@@ -24,10 +24,10 @@ Do you want to contribute to our open source project? Please read the [Contribut
 
 Micronaut + Camunda = :heart:
 
-[![Release](https://img.shields.io/github/v/release/camunda-community-hub/micronaut-camunda-external-client.svg)](https://github.com/camunda-community-hub/micronaut-camunda-external-client/releases)
+[![Release](https://img.shields.io/github/v/release/NovatecConsulting/micronaut-zeebe-client.svg)](https://github.com/NovatecConsulting/micronaut-zeebe-client/releases)
 [![License](https://img.shields.io/:license-apache-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)
-[![Continuous Integration](https://github.com/camunda-community-hub/micronaut-camunda-external-client/workflows/Continuous%20Integration/badge.svg)](https://github.com/camunda-community-hub/micronaut-camunda-external-client/actions)
-[![GitHub Discussions](https://img.shields.io/badge/Forum-GitHub_Discussions-blue)](https://github.com/camunda-community-hub/micronaut-camunda-external-client/discussions)
+[![Continuous Integration](https://github.com/NovatecConsulting/micronaut-zeebe-client/workflows/Continuous%20Integration/badge.svg)](https://github.com/NovatecConsulting/micronaut-zeebe-client/actions)
+[![GitHub Discussions](https://img.shields.io/badge/Forum-GitHub_Discussions-blue)](https://github.com/NovatecConsulting/micronaut-zeebe-client/discussions)
 
 [![](https://img.shields.io/badge/Community%20Extension-An%20open%20source%20community%20maintained%20project-FF4700)](https://github.com/camunda-community-hub/community)
 [![](https://img.shields.io/badge/Lifecycle-Incubating-blue)](https://github.com/Camunda-Community-Hub/community/blob/main/extension-lifecycle.md#incubating-)
@@ -55,11 +55,10 @@ Micronaut + Camunda = :heart:
 
 # 🚀Getting Started
 
-This section describes what needs to be done to use `micronaut-camunda-external-client-feature` in a Micronaut project.
+This section describes what needs to be done to use `micronaut-zeebe-client-feature` in a Micronaut project.
 
 Here are some example applications:
-* [Calculation](https://github.com/tobiasschaefer/micronaut-camunda-external-client-example-java-gradle) where the server with a BPMN process creates calculations which will be executed by the external task client.
-* [Internal example application](/micronaut-camunda-external-client-example) used during development. Remember that you need to start the [Camunda Process Application](/micronaut-camunda-server-example) first.
+* [Internal example application](/micronaut-zeebe-client-example) used during development. Remember that you need to start the [Zeebe Cluster](/micronaut-zeebe-server-example) first.
 
 ## Supported JDKs
 
@@ -80,7 +79,7 @@ You have the following options to integrate the Camunda External Worker integrat
 
   Add the dependency to the build.gradle file:
   ```groovy
-  implementation("info.novatec:micronaut-camunda-external-client-feature:2.0.0")
+  implementation("info.novatec:micronaut-zeebe-client-feature:0.0.1")
   ```
   </details>
 
@@ -91,13 +90,13 @@ You have the following options to integrate the Camunda External Worker integrat
   ```xml
   <dependency>
     <groupId>info.novatec</groupId>
-    <artifactId>micronaut-camunda-external-client-feature</artifactId>
-    <version>2.0.0</version>
+    <artifactId>micronaut-zeebe-client-feature</artifactId>
+    <version>0.0.1</version>
   </dependency>
   ```
   </details>
 
-Note: The module `micronaut-camunda-external-client-feature` includes the dependency `org.camunda.bpm:camunda-external-task-client` which will be resolved transitively.
+Note: The module `micronaut-zeebe-client-feature` includes the dependency `io.camunda:zeebe-client-java` which will be resolved transitively.
 
 ## Creating a Client
 The minimal configuration requires you to provide a handler for a specific topic and a configuration that points to the
@@ -112,7 +111,7 @@ camunda.external-client:
 ```
 Example handler:
 ```java 
-import info.novatec.micronaut.camunda.external.client.feature.ExternalTaskSubscription;
+import info.novatec.micronaut.zeebe.client.feature.ExternalTaskSubscription;
 import jakarta.inject.Inject;
 import org.camunda.bpm.client.task.ExternalTask;
 import org.camunda.bpm.client.task.ExternalTaskHandler;
@@ -190,37 +189,7 @@ public class SimpleHandler implements ExternalTaskHandler {
 }
 ```
 
-# 🏆Advanced Topics
-
-## Customize the External Task Client
-
-With the following bean it is possible to customize the external task client, e.g. to implement custom backoff strategies or register a client request interceptor.
-
-```java
-import info.novatec.micronaut.camunda.external.client.feature.ExternalClientCustomizer;
-import io.micronaut.context.annotation.Replaces;
-import jakarta.inject.Inject;
-import org.camunda.bpm.client.ExternalTaskClientBuilder;
-import org.camunda.bpm.client.backoff.BackoffStrategy;
-import org.camunda.bpm.client.interceptor.ClientRequestInterceptor;
-
-@Singleton
-@Replaces(ExternalClientCustomizer.class)
-public class MyExternalClientCustomizer implements ExternalClientCustomizer {
-
-    @Override
-    public void customize(ExternalTaskClientBuilder builder) {
-        // Do your customization here e.g.:
-        BackoffStrategy backoffStrategy = ...
-        ClientRequestInterceptor interceptor = ...
-
-        builder.backoffStrategy(backoffStrategy)
-                .addInterceptor(interceptor);
-    }
-}
-```
-
-Important: the values set within your customizer have higher priority than the properties set in your configuration file.
+# 🏆Advanced Topic
 
 ## GraalVM
 
@@ -241,98 +210,24 @@ gu install native-image
 
 ### Install GraalVM
 
-Install GraalVM using [SDKMAN!](https://sdkman.io/):
-
-```
-curl -s "https://get.sdkman.io" | bash
-sdk install java 21.0.0.2.r11-grl
-```
-
-### Initialize Environment
-
-```
-sdk use java 21.0.0.2.r11-grl
-export PATH=/Library/Java/JavaVirtualMachines/graalvm-ce-java11-21.0.0.2/Contents/Home/bin:$PATH
-export JAVA_HOME=/Library/Java/JavaVirtualMachines/graalvm-ce-java11-21.0.0.2/Contents/Home
-```
-
-### Create Reflection Configuration
-
-```
-cd micronaut-camunda-external-client-example
-../gradlew build
-mkdir -p src/main/resources/META-INF/native-image/info/novatec/micronaut/camunda/external/client/example
-java -agentlib:native-image-agent=config-output-dir=src/main/resources/META-INF/native-image/info/novatec/micronaut/camunda/external/client/example -jar build/libs/micronaut-camunda-external-client-example-0.0.1-SNAPSHOT-all.jar
-```
-
-and cancel the client with `Ctrl-C` once you see that the client is running when it repeatedly logs `Completed external task`.
-
-### Build Image
-
-Now build the native image - note: this will take a few minutes:
-
-`../gradlew clean nativeImage`
-
-### Start Native Client
-
-You can then start the external client (Note: Server must be running):
-
-`build/native-image/application`
-
-The application will be up and processing the first tasks in about 35ms (!):
-
-```
-INFO  io.micronaut.runtime.Micronaut - Startup completed in 33ms. Server Running: http://localhost:8888
-INFO  i.n.m.c.e.c.example.SimpleHandler - Completed external task
-INFO  i.n.m.c.e.c.example.SimpleHandler - Completed external task
-INFO  i.n.m.c.e.c.example.SimpleHandler - Completed external task
-```
+TODO
 
 # 📚Releases
 
-The list of [releases](https://github.com/camunda-community-hub/micronaut-camunda-external-client/releases) contains a detailed changelog.
-
-We use [Semantic Versioning](https://semver.org/).
-
-The following compatibility matrix shows the officially supported Micronaut and Camunda versions for each release.
-Other combinations might also work but have not been tested. The current release of the external client will probably work with a server running on Camunda 7.9.0 and newer.
-
-| Release |Micronaut | Camunda |
-|--------|--------|--------|
-| 2.0.0  | 3.0.0  | 7.15.0 |
-
-<details>
-<summary>Click to see older releases</summary>
-
-| Release |Micronaut | Camunda |
-|--------|-------|--------|
-| 1.0.1  | 2.5.12 | 7.15.0 |
-| 1.0.0  | 2.5.9 | 7.15.0 |
-| 0.4.0  | 2.5.3 | 7.15.0 |
-| 0.3.0  | 2.5.1 | 7.15.0 |
-| 0.2.0  | 2.4.2 | 7.15.0 |
-| 0.1.0  | 2.4.2 | 7.14.0 |
-</details>
-
-Download of Releases:
-* [GitHub Artifacts](https://github.com/camunda-community-hub/micronaut-camunda-external-client/releases)
-* [Maven Central Artifacts](https://search.maven.org/artifact/info.novatec/micronaut-camunda-external-client-feature)
+TODO
 
 # 📆Publications
 
-* 2021-07: [Automate any Process on Micronaut](https://camunda.com/blog/2021/07/automate-any-process-on-micronaut/)  
-  Blogpost by Tobias Schäfer
-* 2021-04: [The Camunda External Client for Micronaut](https://www.novatec-gmbh.de/en/blog/the-camunda-external-client-for-micronaut/)  
-  by Tobias Schäfer and Martin Sawilla
+TODO
 
 # 📨Contact
 
 This open source project is being developed by [Novatec Consulting GmbH](https://www.novatec-gmbh.de/en/) with the support of the open source community.
 
-If you have any questions or ideas feel free to create an [issue](https://github.com/camunda-community-hub/micronaut-camunda-external-client/issues) or contact us via GitHub Discussions or mail.
+If you have any questions or ideas feel free to create an [issue](https://github.com/NovatecConsulting/micronaut-zeebe-client/issues) or contact us via GitHub Discussions or mail.
 
 We love listening to your feedback, and of course also discussing the project roadmap and possible use cases with you!
 
 You can reach us:
-* [GitHub Discussions](https://github.com/camunda-community-hub/micronaut-camunda-external-client/discussions)
+* [GitHub Discussions](https://github.com/NovatecConsulting/micronaut-zeebe-client/discussions)
 * [mailto:micronaut-camunda@novatec-gmbh.de](mailto:micronaut-camunda@novatec-gmbh.de)

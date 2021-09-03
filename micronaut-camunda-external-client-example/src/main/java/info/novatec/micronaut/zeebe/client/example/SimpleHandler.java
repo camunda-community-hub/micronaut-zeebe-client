@@ -13,32 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package info.novatec.micronaut.camunda.external.client.feature;
+package info.novatec.micronaut.zeebe.client.example;
 
-import io.micronaut.context.annotation.Requires;
-import io.micronaut.context.event.ApplicationEventListener;
-import io.micronaut.context.event.StartupEvent;
-import io.micronaut.runtime.server.EmbeddedServer;
+import info.novatec.micronaut.zeebe.client.feature.ExternalTaskSubscription;
 import jakarta.inject.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.lang.management.ManagementFactory;
 
 /**
  * @author Martin Sawilla
  * @author Stefan Schultz
  * @author Stephan Seelig
  * @author Tobias Schäfer
+ *
+ * This is an example handler on how to build an ExternalTaskHandler. You can register multiple handlers for different
+ * topics.
  */
-@Requires(missingBeans = EmbeddedServer.class)
 @Singleton
-public class ExternalTaskClientStartupTime implements ApplicationEventListener<StartupEvent> {
+@ExternalTaskSubscription(topicName = "number-topic")
+public class SimpleHandler {
 
-    private static final Logger log = LoggerFactory.getLogger(ExternalTaskClientStartupTime.class);
+    private static final Logger log = LoggerFactory.getLogger(SimpleHandler.class);
 
-    @Override
-    public void onApplicationEvent(StartupEvent event) {
-        log.info("Application started in {} ms", ManagementFactory.getRuntimeMXBean().getUptime());
-    }
 }

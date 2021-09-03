@@ -13,21 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package info.novatec.micronaut.camunda.external.client.feature;
+package info.novatec.micronaut.zeebe.client.example;
 
-import io.micronaut.context.annotation.Context;
+import io.micronaut.runtime.Micronaut;
 
+public class ExternalTaskWorkerApplication {
 
-/**
- * @author Martin Sawilla
- * @author Stefan Schultz
- * @author Stephan Seelig
- * @author Tobias Schäfer
- *
- * Allows to configure an external task worker with the {@link ExternalTaskSubscription} annotation. This allows to easily build
- * external workers for multiple topics.
- */
-@Context
-public class ExternalWorkerSubscriptionCreator {
-
+    public static void main(String[] args) {
+        Micronaut.run(ExternalTaskWorkerApplication.class, args);
+    }
 }

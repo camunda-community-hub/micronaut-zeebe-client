@@ -20,7 +20,7 @@ jobs:
           java-version: '8'
 
       - name: Extract secring.gpg to sign files
-        run: echo -n $SECRING_GPG | base64 --decode > micronaut-camunda-external-client-feature/secring.gpg
+        run: echo -n $SECRING_GPG | base64 --decode > micronaut-zeebe-client-feature/secring.gpg
         env:
           SECRING_GPG: ${{ secrets.SECRING_GPG }}
 

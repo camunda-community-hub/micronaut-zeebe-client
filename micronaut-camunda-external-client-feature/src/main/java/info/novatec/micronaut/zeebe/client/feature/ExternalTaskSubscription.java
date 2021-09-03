@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package info.novatec.micronaut.camunda.external.client.feature;
+package info.novatec.micronaut.zeebe.client.feature;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

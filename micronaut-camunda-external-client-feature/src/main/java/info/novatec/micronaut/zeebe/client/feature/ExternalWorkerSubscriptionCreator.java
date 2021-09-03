@@ -13,12 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package info.novatec.micronaut.camunda.external.client.example;
+package info.novatec.micronaut.zeebe.client.feature;
 
-import info.novatec.micronaut.camunda.external.client.feature.ExternalTaskSubscription;
-import jakarta.inject.Singleton;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import io.micronaut.context.annotation.Context;
+
 
 /**
  * @author Martin Sawilla
@@ -26,13 +24,10 @@ import org.slf4j.LoggerFactory;
  * @author Stephan Seelig
  * @author Tobias Schäfer
  *
- * This is an example handler on how to build an ExternalTaskHandler. You can register multiple handlers for different
- * topics.
+ * Allows to configure an external task worker with the {@link ExternalTaskSubscription} annotation. This allows to easily build
+ * external workers for multiple topics.
  */
-@Singleton
-@ExternalTaskSubscription(topicName = "number-topic")
-public class SimpleHandler {
-
-    private static final Logger log = LoggerFactory.getLogger(SimpleHandler.class);
+@Context
+public class ExternalWorkerSubscriptionCreator {
 
 }
