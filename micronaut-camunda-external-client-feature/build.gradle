@@ -20,8 +20,7 @@ micronaut {
 dependencies {
     implementation("io.micronaut:micronaut-runtime")
 
-    api("org.camunda.bpm:camunda-external-task-client:$camundaVersion")
-    api("com.sun.xml.bind:jaxb-impl:$jaxbImpl")
+    api("io.camunda:zeebe-client-java:$zeebeVersion")
 
     runtimeOnly("ch.qos.logback:logback-classic")
 

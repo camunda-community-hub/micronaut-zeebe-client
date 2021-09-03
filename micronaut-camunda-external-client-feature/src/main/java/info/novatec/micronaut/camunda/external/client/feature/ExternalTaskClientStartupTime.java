@@ -27,6 +27,9 @@ import java.lang.management.ManagementFactory;
 
 /**
  * @author Martin Sawilla
+ * @author Stefan Schultz
+ * @author Stephan Seelig
+ * @author Tobias Schäfer
  */
 @Requires(missingBeans = EmbeddedServer.class)
 @Singleton

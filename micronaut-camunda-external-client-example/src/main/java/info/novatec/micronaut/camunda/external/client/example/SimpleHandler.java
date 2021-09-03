@@ -17,32 +17,22 @@ package info.novatec.micronaut.camunda.external.client.example;
 
 import info.novatec.micronaut.camunda.external.client.feature.ExternalTaskSubscription;
 import jakarta.inject.Singleton;
-import org.camunda.bpm.client.task.ExternalTask;
-import org.camunda.bpm.client.task.ExternalTaskHandler;
-import org.camunda.bpm.client.task.ExternalTaskService;
-import org.camunda.bpm.engine.variable.Variables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * @author Martin Sawilla
+ * @author Stefan Schultz
+ * @author Stephan Seelig
+ * @author Tobias Schäfer
  *
  * This is an example handler on how to build an ExternalTaskHandler. You can register multiple handlers for different
  * topics.
  */
 @Singleton
 @ExternalTaskSubscription(topicName = "number-topic")
-public class SimpleHandler implements ExternalTaskHandler {
+public class SimpleHandler {
 
     private static final Logger log = LoggerFactory.getLogger(SimpleHandler.class);
 
-    @Override
-    public void execute(ExternalTask externalTask, ExternalTaskService externalTaskService) {
-
-        int number = externalTask.getVariable("number");
-        int result = number * 2;
-
-        log.info("Completed external task: {}*2={}", number, result);
-        externalTaskService.complete(externalTask, Variables.putValue("result", result));
-    }
 }
