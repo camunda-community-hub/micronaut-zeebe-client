@@ -15,6 +15,8 @@
  */
 package info.novatec.micronaut.zeebe.client.feature;
 
+import io.micronaut.context.annotation.Executable;
+
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Target;
@@ -25,8 +27,9 @@ import java.lang.annotation.Target;
  * @author Stephan Seelig
  * @author Tobias Schäfer
  */
-@Target(ElementType.TYPE)
+@Target(value = {ElementType.TYPE, ElementType.METHOD})
 @Documented
+@Executable
 public @interface ZeebeWorker {
 
     String type();
