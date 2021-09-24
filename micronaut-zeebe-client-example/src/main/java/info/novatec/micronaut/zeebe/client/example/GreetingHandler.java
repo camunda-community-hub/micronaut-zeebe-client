@@ -19,6 +19,7 @@ import info.novatec.micronaut.zeebe.client.feature.ZeebeWorker;
 import io.camunda.zeebe.client.api.response.ActivatedJob;
 import io.camunda.zeebe.client.api.worker.JobClient;
 import io.micronaut.context.annotation.Bean;
+import jakarta.inject.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,7 +31,7 @@ import org.slf4j.LoggerFactory;
  * This is an example handler on how to build an JobHandler. You can register multiple handlers for different
  * types.
  */
-@Bean
+@Singleton
 public class GreetingHandler {
 
     private static final Logger log = LoggerFactory.getLogger(GreetingHandler.class);
