@@ -9,9 +9,6 @@
     <bpmn:serviceTask id="say_hello" name="say hello">
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="say-hello" retries="0" />
-        <zeebe:taskHeaders>
-          <zeebe:header />
-        </zeebe:taskHeaders>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_1efyuib</bpmn:incoming>
       <bpmn:outgoing>Flow_0lvzthn</bpmn:outgoing>
@@ -30,13 +27,13 @@
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_0v3gvdu">
-      <bpmndi:BPMNEdge id="Flow_0lvzthn_di" bpmnElement="Flow_0lvzthn">
-        <di:waypoint x="370" y="117" />
-        <di:waypoint x="422" y="117" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1efyuib_di" bpmnElement="Flow_1efyuib">
         <di:waypoint x="215" y="117" />
         <di:waypoint x="270" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0lvzthn_di" bpmnElement="Flow_0lvzthn">
+        <di:waypoint x="370" y="117" />
+        <di:waypoint x="422" y="117" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Event_1qy5h8o_di" bpmnElement="end">
         <dc:Bounds x="422" y="99" width="36" height="36" />
