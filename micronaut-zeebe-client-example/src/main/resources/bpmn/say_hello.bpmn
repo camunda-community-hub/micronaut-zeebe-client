@@ -14,11 +14,7 @@
       <bpmn:outgoing>Flow_0lvzthn</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:startEvent id="start" name="10s">
-      <bpmn:extensionElements>
-        <zeebe:ioMapping>
-          <zeebe:output source="= source" target="OutputVariable_27tqnkr" />
-        </zeebe:ioMapping>
-      </bpmn:extensionElements>
+      <bpmn:extensionElements />
       <bpmn:outgoing>Flow_1efyuib</bpmn:outgoing>
       <bpmn:timerEventDefinition id="TimerEventDefinition_1gcg4am">
         <bpmn:timeCycle xsi:type="bpmn:tFormalExpression">R/PT10S</bpmn:timeCycle>
