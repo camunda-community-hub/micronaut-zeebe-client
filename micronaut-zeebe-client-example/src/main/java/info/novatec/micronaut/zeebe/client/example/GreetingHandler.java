@@ -18,14 +18,11 @@ package info.novatec.micronaut.zeebe.client.example;
 import info.novatec.micronaut.zeebe.client.feature.ZeebeWorker;
 import io.camunda.zeebe.client.api.response.ActivatedJob;
 import io.camunda.zeebe.client.api.worker.JobClient;
-import io.camunda.zeebe.client.api.worker.JobHandler;
 import io.micronaut.context.annotation.Bean;
-import jakarta.inject.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @author Martin Sawilla
  * @author Stefan Schultz
  * @author Stephan Seelig
  * @author Tobias Schäfer
@@ -34,12 +31,12 @@ import org.slf4j.LoggerFactory;
  * types.
  */
 @Bean
-public class SimpleMethodHandler {
+public class GreetingHandler {
 
-    private static final Logger log = LoggerFactory.getLogger(SimpleMethodHandler.class);
+    private static final Logger log = LoggerFactory.getLogger(GreetingHandler.class);
 
-    @ZeebeWorker(type = "my-task-handler")
+    @ZeebeWorker(type = "say-hello")
     public void doSomething(JobClient client, ActivatedJob job) {
-        log.info("Hello world {}", job.getKey());
+        log.info("Hello world, from job {}", job.getKey());
     }
 }
