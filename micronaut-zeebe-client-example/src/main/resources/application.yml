@@ -1,4 +1,6 @@
 micronaut:
   application:
     name: micronaut-zeebe-client-example
+  server:
+    port: 8087
 
