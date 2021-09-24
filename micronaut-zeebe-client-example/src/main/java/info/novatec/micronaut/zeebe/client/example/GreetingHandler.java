@@ -18,7 +18,6 @@ package info.novatec.micronaut.zeebe.client.example;
 import info.novatec.micronaut.zeebe.client.feature.ZeebeWorker;
 import io.camunda.zeebe.client.api.response.ActivatedJob;
 import io.camunda.zeebe.client.api.worker.JobClient;
-import io.micronaut.context.annotation.Bean;
 import jakarta.inject.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,5 +38,6 @@ public class GreetingHandler {
     @ZeebeWorker(type = "say-hello")
     public void doSomething(JobClient client, ActivatedJob job) {
         log.info("Hello world, from job {}", job.getKey());
+        client.newCompleteCommand(job.getKey()).send().join();
     }
 }
