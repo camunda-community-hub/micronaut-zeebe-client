@@ -2,16 +2,15 @@
 <bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0hwrf98" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.10.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="1.1.0">
   <bpmn:process id="Process_0v3gvdu" name="Say Hello" isExecutable="true">
     <bpmn:endEvent id="end" name="end">
-      <bpmn:incoming>Flow_0lvzthn</bpmn:incoming>
+      <bpmn:incoming>Flow_15exfua</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:sequenceFlow id="Flow_0lvzthn" sourceRef="say_hello" targetRef="end" />
     <bpmn:sequenceFlow id="Flow_1efyuib" sourceRef="start" targetRef="say_hello" />
     <bpmn:serviceTask id="say_hello" name="say hello">
       <bpmn:extensionElements>
         <zeebe:taskDefinition type="say-hello" retries="0" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_1efyuib</bpmn:incoming>
-      <bpmn:outgoing>Flow_0lvzthn</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1lnfcsu</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:startEvent id="start" name="10s">
       <bpmn:extensionElements />
@@ -20,6 +19,15 @@
         <bpmn:timeCycle xsi:type="bpmn:tFormalExpression">R/PT10S</bpmn:timeCycle>
       </bpmn:timerEventDefinition>
     </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_1lnfcsu" sourceRef="say_hello" targetRef="say_goodbye" />
+    <bpmn:sequenceFlow id="Flow_15exfua" sourceRef="say_goodbye" targetRef="end" />
+    <bpmn:serviceTask id="say_goodbye" name="say goodbye">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="say-goodbye" retries="0" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1lnfcsu</bpmn:incoming>
+      <bpmn:outgoing>Flow_15exfua</bpmn:outgoing>
+    </bpmn:serviceTask>
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_0v3gvdu">
@@ -27,16 +35,14 @@
         <di:waypoint x="215" y="117" />
         <di:waypoint x="270" y="117" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0lvzthn_di" bpmnElement="Flow_0lvzthn">
+      <bpmndi:BPMNEdge id="Flow_1lnfcsu_di" bpmnElement="Flow_1lnfcsu">
         <di:waypoint x="370" y="117" />
-        <di:waypoint x="422" y="117" />
+        <di:waypoint x="430" y="117" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="Event_1qy5h8o_di" bpmnElement="end">
-        <dc:Bounds x="422" y="99" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="431" y="142" width="19" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_15exfua_di" bpmnElement="Flow_15exfua">
+        <di:waypoint x="530" y="117" />
+        <di:waypoint x="592" y="117" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Activity_1dbszm8_di" bpmnElement="say_hello">
         <dc:Bounds x="270" y="77" width="100" height="80" />
       </bpmndi:BPMNShape>
@@ -44,6 +50,15 @@
         <dc:Bounds x="179" y="99" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="188" y="142" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1b4m999_di" bpmnElement="say_goodbye">
+        <dc:Bounds x="430" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1qy5h8o_di" bpmnElement="end">
+        <dc:Bounds x="592" y="99" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="601" y="142" width="19" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
