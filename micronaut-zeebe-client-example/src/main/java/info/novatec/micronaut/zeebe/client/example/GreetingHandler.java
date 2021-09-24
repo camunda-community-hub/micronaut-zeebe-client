@@ -17,7 +17,6 @@ package info.novatec.micronaut.zeebe.client.example;
 
 import info.novatec.micronaut.zeebe.client.feature.ZeebeWorker;
 import io.camunda.zeebe.client.api.response.ActivatedJob;
-import io.camunda.zeebe.client.api.response.CompleteJobResponse;
 import io.camunda.zeebe.client.api.worker.JobClient;
 import jakarta.inject.Singleton;
 import org.slf4j.Logger;
