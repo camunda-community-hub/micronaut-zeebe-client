@@ -18,7 +18,6 @@ package info.novatec.micronaut.zeebe.client.feature;
 import io.micronaut.context.annotation.ConfigurationProperties;
 import io.micronaut.context.annotation.Context;
 
-import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -29,7 +28,27 @@ import java.util.Optional;
  */
 @Context
 @ConfigurationProperties("zeebe.client.cloud")
-
 public interface Configuration {
+
+    /**
+     * The clusterId when connecting to Camunda Cloud. Don't set this for a local Zeebe Broker.
+     *
+     * @return the clusterId
+     */
+    Optional<String> getClusterId();
+
+    /**
+     * The clientId to connect to Camunda Cloud. Don't set this for a local Zeebe Broker.
+     *
+     * @return the the clientId
+     */
+    Optional<String> getClientId();
+
+    /**
+     * The clientSecret to connect to Camunda Cloud. Don't set this for a local Zeebe Broker.
+     *
+     * @return the name of the clientSecret
+     */
+    Optional<String> getClientSecret();
 
 }

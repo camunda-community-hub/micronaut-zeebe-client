@@ -16,7 +16,6 @@
 package info.novatec.micronaut.zeebe.client.feature;
 
 import io.camunda.zeebe.client.ZeebeClient;
-import io.camunda.zeebe.client.ZeebeClientBuilder;
 import io.micronaut.context.annotation.Factory;
 import jakarta.inject.Singleton;
 import org.slf4j.Logger;
@@ -36,17 +35,22 @@ public class ZeebeClientFactory {
     @Singleton
     ZeebeClient buildClient(Configuration configuration) {
 
-        ZeebeClientBuilder clientBuilder = ZeebeClient.newClientBuilder();
+        ZeebeClient zeebeClient;
+        if (configuration.getClusterId().isPresent() && configuration.getClientId().isPresent() && configuration.getClientSecret().isPresent()) {
+            zeebeClient = ZeebeClient.newCloudClientBuilder()
+                    .withClusterId(configuration.getClusterId().get())
+                    .withClientId(configuration.getClientId().get())
+                    .withClientSecret(configuration.getClientSecret().get())
+                    .build();
+            log.info("ZeebeClient is configured to connect to Camunda Cloud: {}", zeebeClient.getConfiguration().getGatewayAddress());
+        } else {
+            zeebeClient = ZeebeClient.newClientBuilder()
+                    .usePlaintext()
+                    .build();
+            log.info("ZeebeClient is configured to connect to local Zeebe Broker: {}", zeebeClient.getConfiguration().getGatewayAddress());
+        }
 
-        // TODO: Configuration
-
-        ZeebeClient client = clientBuilder
-                .usePlaintext()
-                .build();
-
-        log.info("ZeebeClient connected to {} and ready to process tasks", client.getConfiguration().getGatewayAddress());
-
-        return client;
+        return zeebeClient;
     }
 
 }

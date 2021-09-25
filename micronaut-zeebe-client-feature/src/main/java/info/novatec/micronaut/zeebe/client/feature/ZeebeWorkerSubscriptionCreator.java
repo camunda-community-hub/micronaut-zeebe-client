@@ -49,7 +49,7 @@ public class ZeebeWorkerSubscriptionCreator {
 
     protected final BeanContext beanContext;
     protected final ZeebeClient zeebeClient;
-    protected Configuration configuration;
+    protected final Configuration configuration;
 
     public ZeebeWorkerSubscriptionCreator(BeanContext beanContext, ZeebeClient zeebeClient, Configuration configuration) {
         this.beanContext = beanContext;
