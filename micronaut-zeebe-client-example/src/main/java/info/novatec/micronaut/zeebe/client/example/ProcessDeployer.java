@@ -1,19 +1,18 @@
 package info.novatec.micronaut.zeebe.client.example;
 
 import io.camunda.zeebe.client.ZeebeClient;
-import io.camunda.zeebe.client.api.ZeebeFuture;
 import io.camunda.zeebe.client.api.response.DeploymentEvent;
 import io.camunda.zeebe.client.api.response.Process;
-import io.micronaut.context.annotation.Context;
 import io.micronaut.context.event.StartupEvent;
 import io.micronaut.runtime.event.annotation.EventListener;
 import io.micronaut.scheduling.annotation.Async;
+import jakarta.inject.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
 
-@Context
+@Singleton
 public class ProcessDeployer {
 
     private static final Logger logger = LoggerFactory.getLogger(ProcessDeployer.class);
