@@ -10,7 +10,7 @@ micronaut {
     testRuntime("junit5")
     processing {
         incremental(true)
-        annotations("micronaut.camunda.bpm.externaltask.worker.*")
+        annotations("micronaut.zeebe.client.example.*")
     }
 }
 
@@ -23,7 +23,7 @@ dependencies {
 }
 
 application {
-    mainClass.set("info.novatec.micronaut.zeebe.client.example.ExternalTaskWorkerApplication")
+    mainClass.set("info.novatec.micronaut.zeebe.client.example.ZeebeApplication")
 }
 
 java {

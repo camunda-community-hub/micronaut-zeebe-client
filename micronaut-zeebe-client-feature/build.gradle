@@ -13,7 +13,7 @@ micronaut {
     testRuntime("junit5")
     processing {
         incremental(true)
-        annotations("micronaut.camunda.external.client.feature.*")
+        annotations("micronaut.zeebe.client.feature.*")
     }
 }
 
