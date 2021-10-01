@@ -51,7 +51,7 @@ Micronaut + Camunda = :heart:
 # ✨Features
 * Camunda external client can be integrated by simply adding a dependency to your project.
 * A worker can subscribe to multiple topics.
-* The worker's external task client can be configured with [properties](#configuration) and [programmatically](#customize-the-external-task-client).
+* The worker's external task client can be configured with [properties](#configuration).
 
 # 🚀Getting Started
 
