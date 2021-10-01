@@ -27,8 +27,9 @@ import org.slf4j.LoggerFactory;
  * @author Stephan Seelig
  * @author Tobias Schäfer
  *
- * This is an example handler on how to build an JobHandler. You can register multiple handlers for different
- * types.
+ * This is an example handler on how to build an JobHandler by annotating the class with {@link ZeebeWorker}.
+ *
+ * See also {@link GoodbyeHandler}.
  */
 @Singleton
 public class GreetingHandler {
@@ -38,6 +39,9 @@ public class GreetingHandler {
     @ZeebeWorker(type = "say-hello")
     public void doSomething(JobClient client, ActivatedJob job) {
         log.info("Hello world, from job {}", job.getKey());
-        client.newCompleteCommand(job.getKey()).send().join();
+        client.newCompleteCommand(job.getKey())
+                .variables(String.format("{\"x\": %d}", (int)(Math.random()*100)))
+                .send()
+                .exceptionally( throwable -> { throw new RuntimeException("Could not complete job " + job, throwable); });
     }
 }
