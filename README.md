@@ -101,8 +101,11 @@ Note: The module `micronaut-zeebe-client-feature` includes the dependency `io.ca
 
 ## Creating a Client
 The minimal configuration requires you to provide a handler for a specific topic. You can register multiple handlers in this way for different topics. 
-To register a handler you just need to add the annotation `ZeebeWorker` and specify the type to listen to. On start of the application the external task 
-client will automatically connect to zeebe and start fetching tasks.
+
+On start of the application the external task client will automatically connect to Zeebe and start fetching tasks.
+
+### Option 1: Annotate Method
+To register a handler you can annotate a method with `ZeebeWorker`.
 
 Example handler:
 ```java 
@@ -118,7 +121,34 @@ public class ExampleHandler {
     public void doSomething(JobClient client, ActivatedJob job) {
         // Put your business logic here
         
-        client.newCompleteCommand(job.getKey()).send().join();
+        client.newCompleteCommand(job.getKey()).send()
+          .exceptionally( throwable -> { throw new RuntimeException("Could not complete job " + job, throwable); });
+    }
+}
+```
+
+
+### Option 2: Annotate Class
+To register a handler you can annotate a class implementing the `JobHandler` interface with `ZeebeWorker`.
+
+Example handler:
+```java 
+import info.novatec.micronaut.zeebe.client.feature.ZeebeWorker;
+import io.camunda.zeebe.client.api.response.ActivatedJob;
+import io.camunda.zeebe.client.api.worker.JobClient;
+import io.camunda.zeebe.client.api.worker.JobHandler;
+import jakarta.inject.Singleton;
+
+@Singleton
+@ZeebeWorker(type = "my-type")
+public class ExampleHandler implements JobHandler {
+
+    @Override
+    public void handle(JobClient client, ActivatedJob job) {
+        // Put your business logic here
+        
+        client.newCompleteCommand(job.getKey()).send()
+          .exceptionally( throwable -> { throw new RuntimeException("Could not complete job " + job, throwable); });
     }
 }
 ```
@@ -131,13 +161,14 @@ The annotation accepts the following properties, more will be added later:
 | type                        |         | The mandatory name the client subscribes to                          |
 
 ## Configuration
-```java
-@Singleton
-@ZeebeWorker(type = "my-topic")
-public class SimpleHandler {
-    ...
-}
-```
+
+You may use the following properties (typically in application.yml) to configure the Zeebe client.
+
+| Prefix                | Property         | Default               | Description                                       |
+|-----------------------|------------------|-----------------------|---------------------------------------------------|
+| zeebe.client.cloud    | .clusterId       |                       | The clusterId when connecting to Camunda Cloud. Don't set this for a local Zeebe Broker. |
+| zeebe.client.cloud    | .clientId        |                       | The clientId to connect to Camunda Cloud. Don't set this for a local Zeebe Broker. |
+| zeebe.client.cloud    | .clientSecret    |                       | The clientSecret to connect to Camunda Cloud. Don't set this for a local Zeebe Broker. |
 
 # 🏆Advanced Topic
 
