@@ -58,6 +58,7 @@ Micronaut + Camunda = :heart:
 This section describes what needs to be done to use `micronaut-zeebe-client-feature` in a Micronaut project.
 
 Here are some example applications:
+* [Example application](https://github.com/tobiasschaefer/micronaut-zeebe-example) which uses the feature.
 * [Internal example application](/micronaut-zeebe-client-example) used during development. Remember that you need to start the [Zeebe Cluster](/micronaut-zeebe-server-example) first.
 
 ## Supported JDKs
