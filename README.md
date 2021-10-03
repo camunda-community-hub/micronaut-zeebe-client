@@ -39,10 +39,9 @@ Micronaut + Camunda = :heart:
   * [Supported JDKs](#supported-jdks)
   * [Dependency Management](#dependency-management)
   * [Creating a Client](#creating-a-client)
-  * [ExternalTaskSubscription Annotation](#externaltasksubscription-annotation)
+  * [ZeebeWorker Annotation](#zeebeworker-annotation)
   * [Configuration](#configuration)
 * 🏆 [Advanced Topics](#advanced-topics)
-  * [Customize the External Task Client](#customize-the-external-task-client)
   * [GraalVM](#graalvm)
 * 📚 [Releases](#releases)
 * 📆 [Publications](#publications)
@@ -170,7 +169,7 @@ You may use the following properties (typically in application.yml) to configure
 | zeebe.client.cloud    | .clientId        |                       | The clientId to connect to Camunda Cloud. Don't set this for a local Zeebe Broker. |
 | zeebe.client.cloud    | .clientSecret    |                       | The clientSecret to connect to Camunda Cloud. Don't set this for a local Zeebe Broker. |
 
-# 🏆Advanced Topic
+# 🏆Advanced Topics
 
 ## GraalVM
 
