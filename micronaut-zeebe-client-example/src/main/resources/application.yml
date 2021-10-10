@@ -4,3 +4,14 @@ micronaut:
   server:
     port: 8087
 
+zeebe:
+  client:
+    cloud:
+      defaultRequestTimeout: PT20S
+      defaultJobPollInterval: 100
+      defaultJobTimeout: PT5M
+      defaultMessageTimeToLive: PT1H
+      defaultJobWorkerName: novatec-worker
+      numJobWorkerExecutionThreads: 1
+      keepAlive: PT45S
+

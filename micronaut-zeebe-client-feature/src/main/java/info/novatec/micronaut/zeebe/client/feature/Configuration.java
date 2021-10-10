@@ -18,6 +18,7 @@ package info.novatec.micronaut.zeebe.client.feature;
 import io.micronaut.context.annotation.ConfigurationProperties;
 import io.micronaut.context.annotation.Context;
 
+import java.time.Duration;
 import java.util.Optional;
 
 /**
@@ -32,6 +33,7 @@ public interface Configuration {
 
     /**
      * The clusterId when connecting to Camunda Cloud. Don't set this for a local Zeebe Broker.
+     * @see io.camunda.zeebe.client.ZeebeClientCloudBuilderStep1#withClusterId(String) 
      *
      * @return the clusterId
      */
@@ -39,6 +41,7 @@ public interface Configuration {
 
     /**
      * The clientId to connect to Camunda Cloud. Don't set this for a local Zeebe Broker.
+     * @see io.camunda.zeebe.client.ZeebeClientCloudBuilderStep1.ZeebeClientCloudBuilderStep2#withClientId(String) 
      *
      * @return the the clientId
      */
@@ -46,9 +49,94 @@ public interface Configuration {
 
     /**
      * The clientSecret to connect to Camunda Cloud. Don't set this for a local Zeebe Broker.
+     * @see io.camunda.zeebe.client.ZeebeClientCloudBuilderStep1.ZeebeClientCloudBuilderStep2.ZeebeClientCloudBuilderStep3#withClientSecret(String) 
      *
      * @return the name of the clientSecret
      */
     Optional<String> getClientSecret();
 
+    /**
+     * The region of the cloud cluster
+     * @see io.camunda.zeebe.client.ZeebeClientCloudBuilderStep1.ZeebeClientCloudBuilderStep2.ZeebeClientCloudBuilderStep3.ZeebeClientCloudBuilderStep4#withRegion(String) 
+     *
+     * @return the region where your cluster is located
+     */
+    Optional<String> getRegion();
+
+    /**
+     * the default request timeout as ISO 8601 standard formatted String
+     * e.g. PT20S for a timeout of 20 seconds
+     * @see io.camunda.zeebe.client.ZeebeClientBuilder#defaultRequestTimeout(Duration) 
+     *
+     * @return the default request timeout
+     */
+    Optional<String> getDefaultRequestTimeout();
+
+    /**
+     * the default job poll interval in milliseconds
+     * e.g. 100 for a timeout of 100 milliseconds
+     * @see io.camunda.zeebe.client.ZeebeClientBuilder#defaultJobPollInterval(Duration) 
+     *
+     * @return the default job poll interval
+     */
+    Optional<Long> getDefaultJobPollInterval();
+
+    /**
+     * the default job timeout as ISO 8601 standard formatted String
+     * e.g. PT5M for a timeout of 5 minutes
+     * @see io.camunda.zeebe.client.ZeebeClientBuilder#defaultJobTimeout(Duration) 
+     *
+     * @return the default job timeout
+     */
+    Optional<String> getDefaultJobTimeout();
+
+    /**
+     * the default message time to live as ISO 8601 standard formatted String
+     * e.g. PT1H for a timeout of 1 hour
+     * @see io.camunda.zeebe.client.ZeebeClientBuilder#defaultMessageTimeToLive(Duration) 
+     *
+     * @return the default message time to live
+     */
+    Optional<String> getDefaultMessageTimeToLive();
+
+    /**
+     * the default job worker name
+     * @see io.camunda.zeebe.client.ZeebeClientBuilder#defaultJobWorkerName(String) 
+     *
+     * @return the default name of a worker
+     */
+    Optional<String> getDefaultJobWorkerName();
+
+    /**
+     * the gateway address to which the client should connect
+     * @see io.camunda.zeebe.client.ZeebeClientBuilder#gatewayAddress(String) 
+     *
+     * @return the gateway address
+     */
+    Optional<String> getGatewayAddress();
+
+    /**
+     * the number of threads used to execute workers
+     * @see io.camunda.zeebe.client.ZeebeClientBuilder#numJobWorkerExecutionThreads(int) 
+     *
+     * @return the count of job worker execution threads
+     */
+    Optional<Integer> getNumJobWorkerExecutionThreads();
+
+    /**
+     * the interval for keep allive messages to be sent as ISO 8601 standard formatted String
+     * e.g. PT45S for 45 seconds
+     * @see io.camunda.zeebe.client.ZeebeClientBuilder#keepAlive(Duration) 
+     *
+     * @return the interval to send keep alive message
+     */
+    Optional<String> getKeepAlive();
+
+    /**
+     * the path to a ca certificate
+     * @see io.camunda.zeebe.client.ZeebeClientBuilder#caCertificatePath(String) 
+     *
+     * @return the custom ca certificate path
+     */
+    Optional<String> getCaCertificatePath();
 }

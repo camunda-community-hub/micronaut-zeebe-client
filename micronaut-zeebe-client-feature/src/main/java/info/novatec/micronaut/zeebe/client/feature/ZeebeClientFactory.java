@@ -16,10 +16,14 @@
 package info.novatec.micronaut.zeebe.client.feature;
 
 import io.camunda.zeebe.client.ZeebeClient;
+import io.camunda.zeebe.client.ZeebeClientBuilder;
+import io.camunda.zeebe.client.ZeebeClientCloudBuilderStep1.ZeebeClientCloudBuilderStep2.ZeebeClientCloudBuilderStep3.ZeebeClientCloudBuilderStep4;
 import io.micronaut.context.annotation.Factory;
 import jakarta.inject.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.time.Duration;
 
 /**
  * @author Martin Sawilla
@@ -35,22 +39,60 @@ public class ZeebeClientFactory {
     @Singleton
     ZeebeClient buildClient(Configuration configuration) {
 
-        ZeebeClient zeebeClient;
-        if (configuration.getClusterId().isPresent() && configuration.getClientId().isPresent() && configuration.getClientSecret().isPresent()) {
-            zeebeClient = ZeebeClient.newCloudClientBuilder()
-                    .withClusterId(configuration.getClusterId().get())
-                    .withClientId(configuration.getClientId().get())
-                    .withClientSecret(configuration.getClientSecret().get())
-                    .build();
-            log.info("ZeebeClient is configured to connect to Camunda Cloud: {}", zeebeClient.getConfiguration().getGatewayAddress());
+        ZeebeClientBuilder zeebeClientBuilder;
+        if (isCloudConfigurationPresent(configuration)) {
+            zeebeClientBuilder = createCloudClient(configuration);
         } else {
-            zeebeClient = ZeebeClient.newClientBuilder()
-                    .usePlaintext()
-                    .build();
-            log.info("ZeebeClient is configured to connect to local Zeebe Broker: {}", zeebeClient.getConfiguration().getGatewayAddress());
+            zeebeClientBuilder = ZeebeClient.newClientBuilder().usePlaintext();
+        }
+        if (configuration.getDefaultRequestTimeout().isPresent()) {
+            zeebeClientBuilder.defaultRequestTimeout(Duration.parse(configuration.getDefaultRequestTimeout().get()));
+        }
+        if (configuration.getDefaultJobPollInterval().isPresent()) {
+            zeebeClientBuilder.defaultJobPollInterval(Duration.ofMillis(configuration.getDefaultJobPollInterval().get()));
+        }
+        if (configuration.getDefaultJobTimeout().isPresent()) {
+            zeebeClientBuilder.defaultJobTimeout(Duration.parse(configuration.getDefaultJobTimeout().get()));
+        }
+        if (configuration.getDefaultMessageTimeToLive().isPresent()) {
+            zeebeClientBuilder.defaultMessageTimeToLive(Duration.parse(configuration.getDefaultMessageTimeToLive().get()));
+        }
+        if (configuration.getDefaultJobWorkerName().isPresent()) {
+            zeebeClientBuilder.defaultJobWorkerName(configuration.getDefaultJobWorkerName().get());
+        }
+        if (configuration.getGatewayAddress().isPresent()) {
+            zeebeClientBuilder.gatewayAddress(configuration.getGatewayAddress().get());
+        }
+        if (configuration.getNumJobWorkerExecutionThreads().isPresent() && configuration.getNumJobWorkerExecutionThreads().get() > 0) {
+            zeebeClientBuilder.numJobWorkerExecutionThreads(configuration.getNumJobWorkerExecutionThreads().get());
+        }
+        if (configuration.getKeepAlive().isPresent()) {
+            zeebeClientBuilder.keepAlive(Duration.parse(configuration.getKeepAlive().get()));
+        }
+        if (configuration.getCaCertificatePath().isPresent()) {
+            zeebeClientBuilder.caCertificatePath(configuration.getCaCertificatePath().get());
         }
 
+        ZeebeClient zeebeClient = zeebeClientBuilder.build();
+        log.info("ZeebeClient is configured to connect to gateway: {}", zeebeClient.getConfiguration().getGatewayAddress());
         return zeebeClient;
+    }
+
+    private ZeebeClientBuilder createCloudClient(Configuration configuration) {
+        ZeebeClientCloudBuilderStep4 builder = ZeebeClient.newCloudClientBuilder()
+                .withClusterId(configuration.getClusterId().get())
+                .withClientId(configuration.getClientId().get())
+                .withClientSecret(configuration.getClientSecret().get());
+        if (configuration.getRegion().isPresent()) {
+            builder.withRegion(configuration.getRegion().get());
+        }
+        return builder;
+    }
+
+    private boolean isCloudConfigurationPresent(Configuration configuration) {
+        return configuration.getClusterId().isPresent()
+                && configuration.getClientId().isPresent()
+                && configuration.getClientSecret().isPresent();
     }
 
 }
