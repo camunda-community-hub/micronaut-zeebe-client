@@ -37,59 +37,37 @@ public class ZeebeClientFactory {
     private static final Logger log = LoggerFactory.getLogger(ZeebeClientFactory.class);
 
     @Singleton
-    ZeebeClient buildClient(Configuration configuration) {
+    public ZeebeClient buildClient(Configuration configuration) {
 
-        ZeebeClientBuilder zeebeClientBuilder;
-        if (isCloudConfigurationPresent(configuration)) {
-            zeebeClientBuilder = createCloudClient(configuration);
-        } else {
-            zeebeClientBuilder = ZeebeClient.newClientBuilder().usePlaintext();
-        }
-        if (configuration.getDefaultRequestTimeout().isPresent()) {
-            zeebeClientBuilder.defaultRequestTimeout(Duration.parse(configuration.getDefaultRequestTimeout().get()));
-        }
-        if (configuration.getDefaultJobPollInterval().isPresent()) {
-            zeebeClientBuilder.defaultJobPollInterval(Duration.ofMillis(configuration.getDefaultJobPollInterval().get()));
-        }
-        if (configuration.getDefaultJobTimeout().isPresent()) {
-            zeebeClientBuilder.defaultJobTimeout(Duration.parse(configuration.getDefaultJobTimeout().get()));
-        }
-        if (configuration.getDefaultMessageTimeToLive().isPresent()) {
-            zeebeClientBuilder.defaultMessageTimeToLive(Duration.parse(configuration.getDefaultMessageTimeToLive().get()));
-        }
-        if (configuration.getDefaultJobWorkerName().isPresent()) {
-            zeebeClientBuilder.defaultJobWorkerName(configuration.getDefaultJobWorkerName().get());
-        }
-        if (configuration.getGatewayAddress().isPresent()) {
-            zeebeClientBuilder.gatewayAddress(configuration.getGatewayAddress().get());
-        }
-        if (configuration.getNumJobWorkerExecutionThreads().isPresent() && configuration.getNumJobWorkerExecutionThreads().get() > 0) {
-            zeebeClientBuilder.numJobWorkerExecutionThreads(configuration.getNumJobWorkerExecutionThreads().get());
-        }
-        if (configuration.getKeepAlive().isPresent()) {
-            zeebeClientBuilder.keepAlive(Duration.parse(configuration.getKeepAlive().get()));
-        }
-        if (configuration.getCaCertificatePath().isPresent()) {
-            zeebeClientBuilder.caCertificatePath(configuration.getCaCertificatePath().get());
-        }
+        ZeebeClientBuilder zeebeClientBuilder = isCloudConfigurationPresent(configuration)
+                ? createCloudClient(configuration)
+                : ZeebeClient.newClientBuilder().usePlaintext();
+
+        configuration.getDefaultRequestTimeout().ifPresent(timeout -> zeebeClientBuilder.defaultRequestTimeout(Duration.parse(timeout)));
+        configuration.getDefaultJobPollInterval().ifPresent(duration -> zeebeClientBuilder.defaultJobPollInterval(Duration.ofMillis(duration)));
+        configuration.getDefaultJobTimeout().ifPresent(timeout -> zeebeClientBuilder.defaultJobTimeout(Duration.parse(timeout)));
+        configuration.getDefaultMessageTimeToLive().ifPresent( ttl -> zeebeClientBuilder.defaultMessageTimeToLive(Duration.parse(ttl)));
+        configuration.getDefaultJobWorkerName().ifPresent(zeebeClientBuilder::defaultJobWorkerName);
+        configuration.getGatewayAddress().ifPresent(zeebeClientBuilder::gatewayAddress);
+        configuration.getNumJobWorkerExecutionThreads().ifPresent(zeebeClientBuilder::numJobWorkerExecutionThreads);
+        configuration.getKeepAlive().ifPresent(keepAlive -> zeebeClientBuilder.keepAlive(Duration.parse(keepAlive)));
+        configuration.getCaCertificatePath().ifPresent(zeebeClientBuilder::caCertificatePath);
 
         ZeebeClient zeebeClient = zeebeClientBuilder.build();
         log.info("ZeebeClient is configured to connect to gateway: {}", zeebeClient.getConfiguration().getGatewayAddress());
         return zeebeClient;
     }
 
-    private ZeebeClientBuilder createCloudClient(Configuration configuration) {
+    protected ZeebeClientBuilder createCloudClient(Configuration configuration) {
         ZeebeClientCloudBuilderStep4 builder = ZeebeClient.newCloudClientBuilder()
                 .withClusterId(configuration.getClusterId().get())
                 .withClientId(configuration.getClientId().get())
                 .withClientSecret(configuration.getClientSecret().get());
-        if (configuration.getRegion().isPresent()) {
-            builder.withRegion(configuration.getRegion().get());
-        }
+        configuration.getRegion().ifPresent(builder::withRegion);
         return builder;
     }
 
-    private boolean isCloudConfigurationPresent(Configuration configuration) {
+    protected boolean isCloudConfigurationPresent(Configuration configuration) {
         return configuration.getClusterId().isPresent()
                 && configuration.getClientId().isPresent()
                 && configuration.getClientSecret().isPresent();
