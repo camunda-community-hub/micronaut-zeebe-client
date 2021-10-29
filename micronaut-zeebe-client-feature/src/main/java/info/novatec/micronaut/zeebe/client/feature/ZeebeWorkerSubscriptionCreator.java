@@ -57,26 +57,31 @@ public class ZeebeWorkerSubscriptionCreator {
 
         this.configuration = configuration;
 
-        beanContext.getAllBeanDefinitions().forEach(this::registerHandler);
+        beanContext.getAllBeanDefinitions()
+                .parallelStream()
+                .forEach(this::registerHandler);
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
-    private void registerHandler(BeanDefinition<?> beanDefinition) {
-        // register methods and classes
+    protected void registerHandler(BeanDefinition<?> beanDefinition) {
+
         Collection<? extends ExecutableMethod<?, ?>> executableMethods = beanDefinition.getExecutableMethods();
         List<? extends ExecutableMethod<?, ?>> annotatedMethods = executableMethods.stream()
                 .filter(m -> m.hasAnnotation(ZeebeWorker.class))
                 .collect(Collectors.toList());
 
-        annotatedMethods.forEach(method -> {
+        annotatedMethods.parallelStream().forEach(method -> {
             AnnotationValue<ZeebeWorker> annotation = method.getAnnotation(ZeebeWorker.class);
-            if(methodSignatureMatchesJobHandler(method.getArguments())) {
+            if (methodSignatureMatchesJobHandler(method.getArguments())) {
                 Class<?> declaringType = method.getDeclaringType();
                 Object bean = beanContext.getBean(declaringType);
                 if (annotation != null) {
                     Optional<String> type = annotation.stringValue("type");
                     type.ifPresent(s -> {
-                        zeebeClient.newWorker().jobType(s).handler((client, job) -> ((ExecutableMethod) method).invoke(bean, client, job)).open();
+                        zeebeClient.newWorker()
+                                .jobType(s)
+                                .handler((client, job) -> ((ExecutableMethod) method).invoke(bean, client, job))
+                                .open();
                         log.info("Zeebe client ({}#{}) subscribed to type '{}'", bean.getClass().getName(), method.getName(), type.get());
                     });
                 }
@@ -84,8 +89,10 @@ public class ZeebeWorkerSubscriptionCreator {
         });
     }
 
-    private boolean methodSignatureMatchesJobHandler(Argument<?>[] arguments) {
-        return arguments.length == 2 && arguments[0].isAssignableFrom(JobClient.class) && arguments[1].isAssignableFrom(ActivatedJob.class);
+    protected boolean methodSignatureMatchesJobHandler(Argument<?>[] arguments) {
+        return arguments.length == 2
+                && arguments[0].isAssignableFrom(JobClient.class)
+                && arguments[1].isAssignableFrom(ActivatedJob.class);
     }
 
 }
