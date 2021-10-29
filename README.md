@@ -1,18 +1,20 @@
 # micronaut-zeebe-client
 
-This open source project allows you to easily integrate [Camunda](https://camunda.com/products/bpmn-engine) 's [External Task Clients](https://docs.camunda.org/manual/latest/user-guide/process-engine/external-tasks/) into [Micronaut](https://micronaut.io) projects.
+This open source project allows you to integrate a [Zeebe](https://docs.camunda.io/docs/components/zeebe/technical-concepts/architecture/) Java Client into 
+your [Micronaut](https://micronaut.io) project (similar to [Spring Zeebe](https://github.com/camunda-community-hub/spring-zeebe/)). It allows you to e.g. deploy processes to [Camunda Cloud](https://docs.camunda.io/docs/components/concepts/what-is-camunda-cloud/), start and cancel instances and work 
+on [jobs](https://docs.camunda.io/docs/components/concepts/job-workers/).
 
-Micronaut is known for its efficient use of resources. With this integration you can easily implement an external client which to process external tasks. If you use GraalVM you have startup times of about 35ms!
+Micronaut is known for its efficient use of resources. With this integration you can easily implement a Zeebe job worker to process tasks.
 
-The integration is preconfigured with sensible defaults, so that you can get started with minimal configuration: simply add a dependency in your Micronaut project!
+The integration is preconfigured with sensible defaults, so that you can get started with minimal configuration: simply add a dependency and your Camunda Cloud credentials in your Micronaut project!
 
-If you also want to run the Camunda Workflow Engine on Micronaut, have a look at the open source project [micronaut-camunda-bpm](https://github.com/camunda-community-hub/micronaut-camunda-bpm).
+If you are interested in using Camunda Platform on Micronaut instead, have a look at our open source project [micronaut-camunda-bpm](https://github.com/camunda-community-hub/micronaut-camunda-bpm).
 
 ---
-_We're not aware of all installations of our Open Source project. However, we love_
-* _listening to your feedback,_
-* _discussing possible use cases with you,_
-* _aligning the roadmap to your needs!_
+_We're not aware of all installations of our Open Source project. However, we love to_
+* _listen to your feedback,_
+* _discuss possible use cases with you,_
+* _align our roadmap to your needs!_
 
 📨 _Please [contact](#contact) us!_
 
@@ -22,7 +24,7 @@ Do you want to try it out? Please jump to the [Getting Started](#getting-started
 
 Do you want to contribute to our open source project? Please read the [Contribution Guidelines](CONTRIBUTING.md) and [contact us](#contact).
 
-Micronaut + Camunda = :heart:
+Micronaut + Camunda Cloud = :heart:
 
 [![Release](https://img.shields.io/github/v/release/NovatecConsulting/micronaut-zeebe-client.svg)](https://github.com/NovatecConsulting/micronaut-zeebe-client/releases)
 [![License](https://img.shields.io/:license-apache-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)
@@ -42,6 +44,7 @@ Micronaut + Camunda = :heart:
   * [ZeebeWorker Annotation](#zeebeworker-annotation)
   * [Configuration](#configuration)
 * 🏆 [Advanced Topics](#advanced-topics)
+  * [Monitoring](#monitoring)  
   * [GraalVM](#graalvm)
 * 📚 [Releases](#releases)
 * 📆 [Publications](#publications)
@@ -180,6 +183,16 @@ You may use the following properties (typically in application.yml) to configure
 |                       | .ca-certificate-path              | default store       | Path to a root CA certificate to be used instead of the certificate in the default keystore.                                  |
 
 # 🏆Advanced Topics
+
+## Monitoring
+Adding a health endpoint for monitoring purposes in a cloud environment can be achieved by adding the dependency:
+
+`runtimeOnly 'io.micronaut:micronaut-management'`
+
+The health endpoint can be retrieved by calling `GET` on `/health`
+
+NOTE: If you don't need a health endpoint you can safely remove the runtime dependency `runtime("netty")` from your project. 
+The application will then run as a CLI application without the embedded server.
 
 ## GraalVM
 
