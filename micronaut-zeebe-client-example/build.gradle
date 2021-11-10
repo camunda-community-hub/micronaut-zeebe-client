@@ -20,6 +20,10 @@ dependencies {
     implementation("io.micronaut:micronaut-runtime")
     implementation("javax.annotation:javax.annotation-api")
     runtimeOnly("ch.qos.logback:logback-classic")
+
+    testImplementation("ch.qos.logback:logback-classic")
+    testImplementation("io.zeebe:zeebe-test-container:3.0.0")
+    testImplementation("org.testcontainers:junit-jupiter:1.16.0")
 }
 
 application {
