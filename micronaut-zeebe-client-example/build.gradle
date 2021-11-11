@@ -22,7 +22,7 @@ dependencies {
     runtimeOnly("ch.qos.logback:logback-classic")
 
     testImplementation("ch.qos.logback:logback-classic")
-    testImplementation("io.zeebe:zeebe-test-container:3.0.0")
+    testImplementation("io.zeebe:zeebe-test-container:3.1.0")
     testImplementation("org.testcontainers:junit-jupiter:1.16.2")
 }
 
