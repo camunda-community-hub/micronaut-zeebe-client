@@ -56,7 +56,7 @@ publishing {
             pom {
                 name = 'micronaut-zeebe-client-feature'
                 description = 'Zeebe Client for Micronaut'
-                url = 'https://github.com/NovatecConsulting/micronaut-zeebe-client'
+                url = 'https://github.com/camunda-community-hub/micronaut-zeebe-client'
                 licenses {
                     license {
                         name = 'The Apache License, Version 2.0'
@@ -72,9 +72,9 @@ publishing {
                     }
                 }
                 scm {
-                    connection = 'scm:git:https://github.com/NovatecConsulting/micronaut-zeebe-client.git'
-                    developerConnection = 'scm:git:https://github.com/NovatecConsulting/micronaut-zeebe-client.git'
-                    url = 'https://github.com/NovatecConsulting/micronaut-zeebe-client'
+                    connection = 'scm:git:https://github.com/camunda-community-hub/micronaut-zeebe-client.git'
+                    developerConnection = 'scm:git:https://github.com/camunda-community-hub/micronaut-zeebe-client.git'
+                    url = 'https://github.com/camunda-community-hub/micronaut-zeebe-client'
                 }
             }
         }
