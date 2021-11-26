@@ -40,7 +40,7 @@ import java.util.stream.Collectors;
  * @author Tobias Schäfer
  * <p>
  * Allows to configure an external task worker with the {@link ZeebeWorker} annotation. This allows to easily build
- * external workers for multiple topics.
+ * job workers for multiple topics.
  */
 @Context
 public class ZeebeWorkerSubscriptionCreator implements AutoCloseable {
