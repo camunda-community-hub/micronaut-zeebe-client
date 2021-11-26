@@ -82,7 +82,7 @@ You have the following options to integrate the Camunda External Worker integrat
 
   Add the dependency to the build.gradle file:
   ```groovy
-  implementation("info.novatec:micronaut-zeebe-client-feature:1.0.1")
+  implementation("info.novatec:micronaut-zeebe-client-feature:1.1.0")
   ```
   </details>
 
@@ -94,7 +94,7 @@ You have the following options to integrate the Camunda External Worker integrat
   <dependency>
     <groupId>info.novatec</groupId>
     <artifactId>micronaut-zeebe-client-feature</artifactId>
-    <version>1.0.1</version>
+    <version>1.1.0</version>
   </dependency>
   ```
   </details>
@@ -226,13 +226,14 @@ Other combinations might also work but have not been tested.
 
 | Release |Micronaut | Zeebe |
 |--------|--------|--------|
-|  1.0.1 | 3.1.3  | 1.2.4  |
+|  1.1.0 | 3.2.0  | 1.2.4  |
 
 <details>
 <summary>Click to see older releases</summary>
 
 | Release |Micronaut | Zeebe |
 |--------|--------|--------|
+|  1.0.1 | 3.1.3  | 1.2.4  |
 |  1.0.0 | 3.1.0  | 1.2.2  |
 |  0.0.1 | 3.0.2  | 1.1.3  |
 
