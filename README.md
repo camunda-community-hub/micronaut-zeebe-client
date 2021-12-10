@@ -202,19 +202,55 @@ The following instructions are based on macOS - other operating systems will pro
 
 ### Initial Setup
 
-Install the `gu` executable to be able to install `native-image` based on instructions: https://www.graalvm.org/docs/getting-started/macos/
+Install the `gu` executable to be able to install `native-image` based on instructions: https://www.graalvm.org/docs/getting-started/macos/ which links to https://github.com/graalvm/graalvm-ce-builds/releases/latest
 
 ```
-tar -xvf graalvm-ce-java11-darwin-amd64-21.0.0.2.tar.gz
-sudo mv graalvm-ce-java11-21.0.0.2 /Library/Java/JavaVirtualMachines
+tar -xvf graalvm-ce-java17-darwin-amd64-21.3.0.tar.gz
+sudo mv graalvm-ce-java17-21.3.0 /Library/Java/JavaVirtualMachines
 /usr/libexec/java_home -V
+sudo xattr -r -d com.apple.quarantine /Library/Java/JavaVirtualMachines/graalvm-ce-java17-21.3.0
+export PATH=/Library/Java/JavaVirtualMachines/graalvm-ce-java17-21.3.0/Contents/Home/bin:$PATH
 gu install native-image
+native-image --version
 ```
 
 ### Install GraalVM
 
-TODO
+Install GraalVM using [SDKMAN!](https://sdkman.io/):
 
+```
+curl -s "https://get.sdkman.io" | bash
+sdk install java 21.3.0.r17-grl
+```
+
+### Initialize Environment
+
+```
+sdk use java 21.3.0.r17-grl
+export PATH=/Library/Java/JavaVirtualMachines/graalvm-ce-java17-21.3.0/Contents/Home/bin:$PATH
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/graalvm-ce-java17-21.3.0/Contents/Home
+```
+
+### Create Reflection Configuration
+
+```
+cd micronaut-zeebe-client-example
+../gradlew clean build
+mkdir -p src/main/resources/META-INF/native-image
+java -agentlib:native-image-agent=config-output-dir=src/main/resources/META-INF/native-image/ -jar build/libs/micronaut-zeebe-client-example-0.0.1-SNAPSHOT-all.jar
+```
+
+Start the server with the provided docker-compose.yml and cancel the client with `Ctrl-C` once you see that the client is running when it repeatedly logs like `Retrieved value 37. Goodbye, from job 4503599627392427`.
+
+### Build Image
+
+The generated `reflect-config.json` probably misses some entries (why?) because building the native image fails with:
+
+`../gradlew clean nativeCompile`
+
+If you have some hints we'll gladly update our documentation.
+
+```
 # 📚Releases
 
 The list of [releases](https://github.com/camunda-community-hub/micronaut-zeebe-client/releases) contains a detailed changelog.
