@@ -244,11 +244,46 @@ Start the server with the provided docker-compose.yml and cancel the client with
 
 ### Build Image
 
-The generated `reflect-config.json` probably misses some entries (why?) because building the native image fails with:
+The generated `reflect-config.json` misses three entries (why?) which we add manually:
+```
+  {
+    "name":"io.grpc.util.SecretRoundRobinLoadBalancerProvider$Provider",
+    "queryAllPublicMethods":true,
+    "methods":[{"name":"<init>","parameterTypes":[] }]}
+,
+  {
+    "name":"io.grpc.internal.PickFirstLoadBalancerProvider",
+    "queryAllPublicMethods":true,
+    "methods":[{"name":"<init>","parameterTypes":[] }]}
+,
+  {
+    "name":"io.grpc.internal.DnsNameResolverProvider",
+    "queryAllPublicMethods":true,
+    "methods":[{"name":"<init>","parameterTypes":[] }]}
+,
+```
+
+Now build the native image - note: this will take a few minutes:
 
 `../gradlew clean nativeCompile`
 
-If you have some hints we'll gladly update our documentation.
+### Start Native Client
+
+You can then start the external client (Note: Server must be running):
+
+`build/native/nativeCompile/micronaut-zeebe-client-example`
+
+The application will be up and processing the first tasks in about 35ms (!):
+
+```
+INFO  io.micronaut.runtime.Micronaut - Startup completed in 33ms. Server Running: http://localhost:8087
+INFO  i.n.m.z.c.example.GreetingHandler - Hello world, from job 2251799813709648
+INFO  io.camunda.zeebe.client.job.poller - Activated 1 jobs for worker default and job type say-hello
+INFO  i.n.m.z.c.example.GoodbyeHandler - Retrieved value 18. Goodbye, from job 2251799813709653
+INFO  io.camunda.zeebe.client.job.poller - Activated 1 jobs for worker default and job type say-goodbye
+INFO  i.n.m.z.c.example.GreetingHandler - Hello world, from job 4503599627394811
+INFO  io.camunda.zeebe.client.job.poller - Activated 1 jobs for worker default and job type say-hello
+```
 
 ```
 # 📚Releases
