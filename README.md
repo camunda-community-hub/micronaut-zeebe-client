@@ -4,7 +4,7 @@ This open source project allows you to integrate a [Zeebe](https://docs.camunda.
 your [Micronaut](https://micronaut.io) project (similar to [Spring Zeebe](https://github.com/camunda-community-hub/spring-zeebe/)). It allows you to e.g. deploy processes to [Camunda Cloud](https://docs.camunda.io/docs/components/concepts/what-is-camunda-cloud/), start and cancel instances and work 
 on [jobs](https://docs.camunda.io/docs/components/concepts/job-workers/).
 
-Micronaut is known for its efficient use of resources. With this integration you can easily implement a Zeebe job worker to process tasks.
+Micronaut is known for its efficient use of resources. With this integration you can easily implement a Zeebe job worker to process tasks. If you use GraalVM you have startup times of about 35ms!
 
 The integration is preconfigured with sensible defaults, so that you can get started with minimal configuration: simply add a dependency and your Camunda Cloud credentials in your Micronaut project!
 
