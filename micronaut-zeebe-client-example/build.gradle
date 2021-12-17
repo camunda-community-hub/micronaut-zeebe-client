@@ -34,3 +34,11 @@ java {
     sourceCompatibility = JavaVersion.toVersion("1.8")
     targetCompatibility = JavaVersion.toVersion("1.8")
 }
+
+graalvmNative {
+    binaries {
+        main {
+            buildArgs.add("-H:-UseServiceLoaderFeature")
+        }
+    }
+}
