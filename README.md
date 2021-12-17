@@ -82,7 +82,7 @@ You have the following options to integrate the Zeebe integration:
 
   Add the dependency to the build.gradle file:
   ```groovy
-  implementation("info.novatec:micronaut-zeebe-client-feature:1.1.0")
+  implementation("info.novatec:micronaut-zeebe-client-feature:1.1.1")
   ```
   </details>
 
@@ -94,7 +94,7 @@ You have the following options to integrate the Zeebe integration:
   <dependency>
     <groupId>info.novatec</groupId>
     <artifactId>micronaut-zeebe-client-feature</artifactId>
-    <version>1.1.0</version>
+    <version>1.1.1</version>
   </dependency>
   ```
   </details>
@@ -245,22 +245,22 @@ Start the server with the provided docker-compose.yml and cancel the client with
 ### Build Image
 
 The generated `reflect-config.json` misses three entries (why?) which we add manually:
-```
-  {
-    "name":"io.grpc.util.SecretRoundRobinLoadBalancerProvider$Provider",
-    "queryAllPublicMethods":true,
-    "methods":[{"name":"<init>","parameterTypes":[] }]}
-,
-  {
-    "name":"io.grpc.internal.PickFirstLoadBalancerProvider",
-    "queryAllPublicMethods":true,
-    "methods":[{"name":"<init>","parameterTypes":[] }]}
-,
-  {
-    "name":"io.grpc.internal.DnsNameResolverProvider",
-    "queryAllPublicMethods":true,
-    "methods":[{"name":"<init>","parameterTypes":[] }]}
-,
+```json
+{
+  "name":"io.grpc.util.SecretRoundRobinLoadBalancerProvider$Provider",
+  "queryAllPublicMethods":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"io.grpc.internal.PickFirstLoadBalancerProvider",
+  "queryAllPublicMethods":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"io.grpc.internal.DnsNameResolverProvider",
+  "queryAllPublicMethods":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
 ```
 
 Now build the native image - note: this will take a few minutes:
@@ -285,7 +285,6 @@ INFO  i.n.m.z.c.example.GreetingHandler - Hello world, from job 4503599627394811
 INFO  io.camunda.zeebe.client.job.poller - Activated 1 jobs for worker default and job type say-hello
 ```
 
-```
 # 📚Releases
 
 The list of [releases](https://github.com/camunda-community-hub/micronaut-zeebe-client/releases) contains a detailed changelog.
@@ -297,13 +296,14 @@ Other combinations might also work but have not been tested.
 
 | Release |Micronaut | Zeebe |
 |--------|--------|--------|
-|  1.1.0 | 3.2.0  | 1.2.4  |
+|  1.1.1 | 3.2.3  | 1.2.7  |
 
 <details>
 <summary>Click to see older releases</summary>
 
 | Release |Micronaut | Zeebe |
 |--------|--------|--------|
+|  1.1.0 | 3.2.0  | 1.2.4  |
 |  1.0.1 | 3.1.3  | 1.2.4  |
 |  1.0.0 | 3.1.0  | 1.2.2  |
 |  0.0.1 | 3.0.2  | 1.1.3  |
