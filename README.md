@@ -44,6 +44,7 @@ Micronaut + Camunda Cloud = :heart:
   * [ZeebeWorker Annotation](#zeebeworker-annotation)
   * [Configuration](#configuration)
 * 🏆 [Advanced Topics](#advanced-topics)
+  * [Process Tests](#process-tests)
   * [Monitoring](#monitoring)  
   * [GraalVM](#graalvm)
 * 📚 [Releases](#releases)
@@ -183,6 +184,102 @@ You may use the following properties (typically in application.yml) to configure
 |                       | .ca-certificate-path              | default store       | Path to a root CA certificate to be used instead of the certificate in the default keystore.                                  |
 
 # 🏆Advanced Topics
+
+## Process Tests
+
+Process tests can be implemented with JUnit 5 and JDK 11 and newer by adding the [Zeebe Process Test](https://github.com/camunda-cloud/zeebe-process-test) library as a dependency:
+
+<details>
+<summary>Click to show Gradle dependencies</summary>
+
+```groovy
+testImplementation("io.camunda:zeebe-process-test:1.3.0")
+```
+</details>
+
+<details>
+<summary>Click to show Maven dependencies</summary>
+
+```xml
+<dependency>
+  <groupId>io.camunda</groupId>
+  <artifactId>zeebe-process-test</artifactId>
+  <version>1.3.0</version>
+  <scope>test</scope>
+</dependency>
+```
+</details>
+
+and then implement the unit test with the `@ZeebeProcessTest` but without the `@MicronautTest` annotation:
+
+```java
+import io.camunda.zeebe.client.ZeebeClient;
+import io.camunda.zeebe.client.api.response.ActivateJobsResponse;
+import io.camunda.zeebe.client.api.response.ActivatedJob;
+import io.camunda.zeebe.client.api.response.DeploymentEvent;
+import io.camunda.zeebe.client.api.response.ProcessInstanceEvent;
+import io.camunda.zeebe.process.test.assertions.BpmnAssert;
+import io.camunda.zeebe.process.test.assertions.ProcessInstanceAssert;
+import io.camunda.zeebe.process.test.extensions.ZeebeProcessTest;
+import io.camunda.zeebe.process.test.testengine.InMemoryEngine;
+import io.camunda.zeebe.process.test.testengine.RecordStreamSource;
+import org.junit.jupiter.api.Test;
+
+@ZeebeProcessTest
+class ProcessTest {
+
+  InMemoryEngine engine;
+  ZeebeClient client;
+  @SuppressWarnings("unused")
+  RecordStreamSource recordStreamSource;
+
+  @Test
+  void workerShouldProcessWork() {
+
+    // Deploy process model
+    DeploymentEvent deploymentEvent = client.newDeployCommand()
+            .addResourceFromClasspath("bpmn/say_hello.bpmn")
+            .send()
+            .join();
+
+    BpmnAssert.assertThat(deploymentEvent);
+
+    // Start process instance
+    ProcessInstanceEvent event = client.newCreateInstanceCommand()
+            .bpmnProcessId("Process_SayHello")
+            .latestVersion()
+            .send()
+            .join();
+
+    engine.waitForIdleState();
+
+    // Verify that process has started
+    ProcessInstanceAssert processInstanceAssertions = BpmnAssert.assertThat(event);
+    processInstanceAssertions.hasPassedElement("start");
+    processInstanceAssertions.isWaitingAtElement("say_hello");
+
+    // Fetch job: say-hello
+    ActivateJobsResponse response = client.newActivateJobsCommand()
+            .jobType("say-hello")
+            .maxJobsToActivate(1)
+            .send()
+            .join();
+
+    // Complete job: say-hello
+    ActivatedJob activatedJob = response.getJobs().get(0);
+    client.newCompleteCommand(activatedJob.getKey()).send().join();
+    engine.waitForIdleState();
+
+    // ...
+
+    // Verify completed
+    engine.waitForIdleState();
+    processInstanceAssertions.isCompleted();
+  }
+}
+```
+
+See also a test in our example application: [ProcessTest](/micronaut-zeebe-client-example/src/test/java/info/novatec/micronaut/zeebe/client/example/ProcessTest.java)
 
 ## Monitoring
 Adding a health endpoint for monitoring purposes in a cloud environment can be achieved by adding the dependency:
