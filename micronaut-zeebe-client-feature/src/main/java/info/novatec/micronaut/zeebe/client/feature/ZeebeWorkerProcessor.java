@@ -18,26 +18,34 @@ package info.novatec.micronaut.zeebe.client.feature;
 import io.camunda.zeebe.client.ZeebeClient;
 import io.camunda.zeebe.client.api.response.ActivatedJob;
 import io.camunda.zeebe.client.api.worker.JobClient;
+import io.camunda.zeebe.client.api.worker.JobWorker;
 import io.micronaut.context.BeanContext;
 import io.micronaut.context.processor.ExecutableMethodProcessor;
 import io.micronaut.core.annotation.AnnotationValue;
 import io.micronaut.core.type.Argument;
 import io.micronaut.inject.BeanDefinition;
 import io.micronaut.inject.ExecutableMethod;
+import jakarta.annotation.PreDestroy;
 import jakarta.inject.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 /**
  * @author Tobias Schäfer
  */
 @Singleton
-public class ZeebeWorkerProcessor implements ExecutableMethodProcessor<ZeebeWorker> {
+public class ZeebeWorkerProcessor implements ExecutableMethodProcessor<ZeebeWorker>, AutoCloseable {
 
     private static final Logger log = LoggerFactory.getLogger(ZeebeWorkerProcessor.class);
 
     protected final BeanContext beanContext;
     protected final ZeebeClient zeebeClient;
+
+    protected Collection<JobWorker> jobWorkers = Collections.synchronizedCollection(new ArrayList<>());
 
     public ZeebeWorkerProcessor(BeanContext beanContext, ZeebeClient zeebeClient) {
         this.beanContext = beanContext;
@@ -49,6 +57,13 @@ public class ZeebeWorkerProcessor implements ExecutableMethodProcessor<ZeebeWork
         registerJobHandler(method);
     }
 
+    @PreDestroy
+    @Override
+    public void close() {
+        log.info("Closing {} job workers", jobWorkers.size());
+        jobWorkers.forEach(JobWorker::close);
+    }
+
     protected void registerJobHandler(ExecutableMethod<?, ?> method) {
         AnnotationValue<ZeebeWorker> annotation = method.getAnnotation(ZeebeWorker.class);
         if (methodSignatureMatchesJobHandler(method.getArguments())) {
@@ -56,10 +71,11 @@ public class ZeebeWorkerProcessor implements ExecutableMethodProcessor<ZeebeWork
             Object bean = beanContext.getBean(declaringType);
             if (annotation != null) {
                 annotation.stringValue("type").ifPresent(type -> {
-                    zeebeClient
+                    JobWorker jobWorker = zeebeClient
                             .newWorker()
                             .jobType(type)
                             .handler((client, job) -> ((ExecutableMethod) method).invoke(bean, client, job)).open();
+                    jobWorkers.add(jobWorker);
                     log.info("Zeebe client ({}#{}) subscribed to type '{}'", bean.getClass().getName(), method.getName(), type);
                 });
             }
