@@ -135,7 +135,7 @@
   "methods":[{"name":"<init>","parameterTypes":[] }]}
 ,
 {
-  "name":"info.novatec.micronaut.zeebe.client.feature.$ZeebeWorkerSubscriptionCreator$Definition$Reference",
+  "name":"info.novatec.micronaut.zeebe.client.feature.$ZeebeWorkerProcessor$Definition$Reference",
   "methods":[{"name":"<init>","parameterTypes":[] }]}
 ,
 {
