@@ -22,8 +22,9 @@ dependencies {
     runtimeOnly("ch.qos.logback:logback-classic")
 
     testImplementation("ch.qos.logback:logback-classic")
-    testImplementation("io.zeebe:zeebe-test-container:3.2.0")
-    testImplementation("org.testcontainers:junit-jupiter:1.16.2")
+    testImplementation("io.zeebe:zeebe-test-container:3.3.0")
+    testImplementation("org.testcontainers:junit-jupiter:1.16.3")
+    testImplementation("io.camunda:zeebe-process-test:1.3.3")
 }
 
 application {
@@ -34,3 +35,23 @@ java {
     sourceCompatibility = JavaVersion.toVersion("1.8")
     targetCompatibility = JavaVersion.toVersion("1.8")
 }
+
+sourceSets {
+    test {
+        java {
+            if (JavaVersion.current() == JavaVersion.VERSION_1_8) {
+                exclude '**/ProcessTest.*'
+            }
+        }
+    }
+}
+
+graalvmNative {
+    binaries {
+        main {
+            buildArgs.add("-H:-UseServiceLoaderFeature")
+        }
+    }
+}
+
+graalvmNative.toolchainDetection = false

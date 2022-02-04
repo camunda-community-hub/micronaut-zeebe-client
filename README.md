@@ -4,7 +4,7 @@ This open source project allows you to integrate a [Zeebe](https://docs.camunda.
 your [Micronaut](https://micronaut.io) project (similar to [Spring Zeebe](https://github.com/camunda-community-hub/spring-zeebe/)). It allows you to e.g. deploy processes to [Camunda Cloud](https://docs.camunda.io/docs/components/concepts/what-is-camunda-cloud/), start and cancel instances and work 
 on [jobs](https://docs.camunda.io/docs/components/concepts/job-workers/).
 
-Micronaut is known for its efficient use of resources. With this integration you can easily implement a Zeebe job worker to process tasks.
+Micronaut is known for its efficient use of resources. With this integration you can easily implement a Zeebe job worker to process tasks. If you use GraalVM you have startup times of about 35ms!
 
 The integration is preconfigured with sensible defaults, so that you can get started with minimal configuration: simply add a dependency and your Camunda Cloud credentials in your Micronaut project!
 
@@ -44,6 +44,7 @@ Micronaut + Camunda Cloud = :heart:
   * [ZeebeWorker Annotation](#zeebeworker-annotation)
   * [Configuration](#configuration)
 * 🏆 [Advanced Topics](#advanced-topics)
+  * [Process Tests](#process-tests)
   * [Monitoring](#monitoring)  
   * [GraalVM](#graalvm)
 * 📚 [Releases](#releases)
@@ -82,7 +83,7 @@ You have the following options to integrate the Zeebe integration:
 
   Add the dependency to the build.gradle file:
   ```groovy
-  implementation("info.novatec:micronaut-zeebe-client-feature:1.1.0")
+  implementation("info.novatec:micronaut-zeebe-client-feature:1.3.1")
   ```
   </details>
 
@@ -94,7 +95,7 @@ You have the following options to integrate the Zeebe integration:
   <dependency>
     <groupId>info.novatec</groupId>
     <artifactId>micronaut-zeebe-client-feature</artifactId>
-    <version>1.1.0</version>
+    <version>1.3.1</version>
   </dependency>
   ```
   </details>
@@ -184,6 +185,102 @@ You may use the following properties (typically in application.yml) to configure
 
 # 🏆Advanced Topics
 
+## Process Tests
+
+Process tests can be implemented with JUnit 5 and JDK 11 and newer by adding the [Zeebe Process Test](https://github.com/camunda-cloud/zeebe-process-test) library as a dependency:
+
+<details>
+<summary>Click to show Gradle dependencies</summary>
+
+```groovy
+testImplementation("io.camunda:zeebe-process-test:1.3.0")
+```
+</details>
+
+<details>
+<summary>Click to show Maven dependencies</summary>
+
+```xml
+<dependency>
+  <groupId>io.camunda</groupId>
+  <artifactId>zeebe-process-test</artifactId>
+  <version>1.3.0</version>
+  <scope>test</scope>
+</dependency>
+```
+</details>
+
+and then implement the unit test with the `@ZeebeProcessTest` but without the `@MicronautTest` annotation:
+
+```java
+import io.camunda.zeebe.client.ZeebeClient;
+import io.camunda.zeebe.client.api.response.ActivateJobsResponse;
+import io.camunda.zeebe.client.api.response.ActivatedJob;
+import io.camunda.zeebe.client.api.response.DeploymentEvent;
+import io.camunda.zeebe.client.api.response.ProcessInstanceEvent;
+import io.camunda.zeebe.process.test.assertions.BpmnAssert;
+import io.camunda.zeebe.process.test.assertions.ProcessInstanceAssert;
+import io.camunda.zeebe.process.test.extensions.ZeebeProcessTest;
+import io.camunda.zeebe.process.test.testengine.InMemoryEngine;
+import io.camunda.zeebe.process.test.testengine.RecordStreamSource;
+import org.junit.jupiter.api.Test;
+
+@ZeebeProcessTest
+class ProcessTest {
+
+  InMemoryEngine engine;
+  ZeebeClient client;
+  @SuppressWarnings("unused")
+  RecordStreamSource recordStreamSource;
+
+  @Test
+  void workerShouldProcessWork() {
+
+    // Deploy process model
+    DeploymentEvent deploymentEvent = client.newDeployCommand()
+            .addResourceFromClasspath("bpmn/say_hello.bpmn")
+            .send()
+            .join();
+
+    BpmnAssert.assertThat(deploymentEvent);
+
+    // Start process instance
+    ProcessInstanceEvent event = client.newCreateInstanceCommand()
+            .bpmnProcessId("Process_SayHello")
+            .latestVersion()
+            .send()
+            .join();
+
+    engine.waitForIdleState();
+
+    // Verify that process has started
+    ProcessInstanceAssert processInstanceAssertions = BpmnAssert.assertThat(event);
+    processInstanceAssertions.hasPassedElement("start");
+    processInstanceAssertions.isWaitingAtElement("say_hello");
+
+    // Fetch job: say-hello
+    ActivateJobsResponse response = client.newActivateJobsCommand()
+            .jobType("say-hello")
+            .maxJobsToActivate(1)
+            .send()
+            .join();
+
+    // Complete job: say-hello
+    ActivatedJob activatedJob = response.getJobs().get(0);
+    client.newCompleteCommand(activatedJob.getKey()).send().join();
+    engine.waitForIdleState();
+
+    // ...
+
+    // Verify completed
+    engine.waitForIdleState();
+    processInstanceAssertions.isCompleted();
+  }
+}
+```
+
+See also a test in our example application: [ProcessTest](/micronaut-zeebe-client-example/src/test/java/info/novatec/micronaut/zeebe/client/example/ProcessTest.java)
+
 ## Monitoring
 Adding a health endpoint for monitoring purposes in a cloud environment can be achieved by adding the dependency:
 
@@ -244,13 +341,47 @@ Start the server with the provided docker-compose.yml and cancel the client with
 
 ### Build Image
 
-The generated `reflect-config.json` probably misses some entries (why?) because building the native image fails with:
+The generated `reflect-config.json` misses three entries (why?) which we add manually:
+```json
+{
+  "name":"io.grpc.util.SecretRoundRobinLoadBalancerProvider$Provider",
+  "queryAllPublicMethods":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"io.grpc.internal.PickFirstLoadBalancerProvider",
+  "queryAllPublicMethods":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
+  "name":"io.grpc.internal.DnsNameResolverProvider",
+  "queryAllPublicMethods":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+```
+
+Now build the native image - note: this will take a few minutes:
 
 `../gradlew clean nativeCompile`
 
-If you have some hints we'll gladly update our documentation.
+### Start Native Client
+
+You can then start the external client (Note: Server must be running):
+
+`build/native/nativeCompile/micronaut-zeebe-client-example`
+
+The application will be up and processing the first tasks in about 35ms (!):
 
 ```
+INFO  io.micronaut.runtime.Micronaut - Startup completed in 33ms. Server Running: http://localhost:8087
+INFO  i.n.m.z.c.example.GreetingHandler - Hello world, from job 2251799813709648
+INFO  io.camunda.zeebe.client.job.poller - Activated 1 jobs for worker default and job type say-hello
+INFO  i.n.m.z.c.example.GoodbyeHandler - Retrieved value 18. Goodbye, from job 2251799813709653
+INFO  io.camunda.zeebe.client.job.poller - Activated 1 jobs for worker default and job type say-goodbye
+INFO  i.n.m.z.c.example.GreetingHandler - Hello world, from job 4503599627394811
+INFO  io.camunda.zeebe.client.job.poller - Activated 1 jobs for worker default and job type say-hello
+```
+
 # 📚Releases
 
 The list of [releases](https://github.com/camunda-community-hub/micronaut-zeebe-client/releases) contains a detailed changelog.
@@ -260,15 +391,21 @@ We use [Semantic Versioning](https://semver.org/).
 The following compatibility matrix shows the officially supported Micronaut and Zeebe versions for each release.
 Other combinations might also work but have not been tested.
 
-| Release |Micronaut | Zeebe |
-|--------|--------|--------|
-|  1.1.0 | 3.2.0  | 1.2.4  |
+| Release | Micronaut | Zeebe |
+|---------|-----------|-------|
+| 1.3.1   | 3.3.0     | 1.3.2 |
 
 <details>
 <summary>Click to see older releases</summary>
 
 | Release |Micronaut | Zeebe |
 |--------|--------|--------|
+|  1.3.0 | 3.3.0  | 1.3.1  |
+|  1.2.2 | 3.2.7  | 1.3.1  |
+|  1.2.1 | 3.2.7  | 1.3.1  |
+|  1.2.0 | 3.2.6  | 1.3.0  |
+|  1.1.1 | 3.2.3  | 1.2.7  |
+|  1.1.0 | 3.2.0  | 1.2.4  |
 |  1.0.1 | 3.1.3  | 1.2.4  |
 |  1.0.0 | 3.1.0  | 1.2.2  |
 |  0.0.1 | 3.0.2  | 1.1.3  |

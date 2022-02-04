@@ -3,15 +3,11 @@ micronaut:
     name: micronaut-zeebe-client-example
   server:
     port: 8087
-
+netty:
+  default:
+    allocator:
+      max-order: 3
 zeebe:
   client:
     cloud:
-      defaultRequestTimeout: PT20S
-      defaultJobPollInterval: 100
-      defaultJobTimeout: PT5M
-      defaultMessageTimeToLive: PT1H
       defaultJobWorkerName: novatec-worker
-      numJobWorkerExecutionThreads: 1
-      keepAlive: PT45S
-
