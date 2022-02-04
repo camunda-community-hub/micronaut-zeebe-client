@@ -46,7 +46,7 @@ public class ZeebeClientFactory {
     protected ZeebeClientBuilder createZeebeClientBuilder(Configuration configuration) {
         ZeebeClientBuilder zeebeClientBuilder = isCloudConfigurationPresent(configuration)
                 ? createCloudClient(configuration)
-                : ZeebeClient.newClientBuilder().usePlaintext();
+                : createDefaultClient(configuration);
 
         configuration.getDefaultRequestTimeout().ifPresent(timeout -> zeebeClientBuilder.defaultRequestTimeout(Duration.parse(timeout)));
         configuration.getDefaultJobPollInterval().ifPresent(duration -> zeebeClientBuilder.defaultJobPollInterval(Duration.ofMillis(duration)));
@@ -69,10 +69,18 @@ public class ZeebeClientFactory {
         return builder;
     }
 
+    protected ZeebeClientBuilder createDefaultClient(Configuration configuration) {
+        ZeebeClientBuilder zeebeClientBuilder = ZeebeClient.newClientBuilder();
+        if (configuration.getUsePlainTextConnection().orElse(true)) {
+            zeebeClientBuilder.usePlaintext();
+        }
+
+        return zeebeClientBuilder;
+    }
+
     protected boolean isCloudConfigurationPresent(Configuration configuration) {
         return configuration.getClusterId().isPresent()
                 && configuration.getClientId().isPresent()
                 && configuration.getClientSecret().isPresent();
     }
-
 }

@@ -15,6 +15,7 @@
  */
 package info.novatec.micronaut.zeebe.client.feature;
 
+import io.camunda.zeebe.client.ZeebeClientBuilder;
 import io.micronaut.context.annotation.ConfigurationProperties;
 import io.micronaut.context.annotation.Context;
 
@@ -62,6 +63,14 @@ public interface Configuration {
      * @return the region where your cluster is located
      */
     Optional<String> getRegion();
+
+    /**
+     * Whether to connect with plain text or SSL/TLS. This option is not evaluated when connecting to Camunda Cloud which always uses a secure connection via SSL/TLS.
+     * @see ZeebeClientBuilder#usePlaintext()
+     *
+     * @return whether the connection is using plain text or SSL/TLS
+     */
+    Optional<Boolean> getUsePlainTextConnection();
 
     /**
      * the default request timeout as ISO 8601 standard formatted String

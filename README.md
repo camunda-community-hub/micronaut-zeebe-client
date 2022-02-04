@@ -167,21 +167,22 @@ The annotation accepts the following properties, more will be added later:
 
 You may use the following properties (typically in application.yml) to configure the Zeebe client.
 
-| Prefix                | Property                          | Default             | Description                                                                                                                   |
-|-----------------------|-----------------------------------|---------------------|-------------------------------------------------------------------------------------------------------------------------------|
-| zeebe.client.cloud    | .cluster-id                       |                     | The cluster ID when connecting to Camunda Cloud. Don't set this for a local Zeebe Broker.                                     |
-|                       | .client-id                        |                     | The client ID to connect to Camunda Cloud. Don't set this for a local Zeebe Broker.                                           |
-|                       | .client-secret                    |                     | The client secret to connect to Camunda Cloud. Don't set this for a local Zeebe Broker.                                       |
-|                       | .region                           | bru-2               | The region of the Camunda Cloud cluster.                                                                                      |
-|                       | .default-request-timeout          | PT20S               | The request timeout used if not overridden by the command.                                                                    |
-|                       | .default-job-poll-interval        | 100                 | The interval which a job worker is periodically polling for new jobs.                                                         |
-|                       | .default-job-timeout              | PT5M                | The timeout which is used when none is provided for a job worker.                                                             |
-|                       | .default-message-time-to-live     | PT1H                | The time-to-live which is used when none is provided for a message.                                                           |
-|                       | .default-job-worker-name          | default             | The name of the worker which is used when none is set for a job worker.                                                       |
-|                       | .num-job-worker-execution-threads | 1                   | The number of threads for invocation of job workers. Setting this value to 0 effectively disables subscriptions and workers.  |
-|                       | .keep-alive                       | PT45S               | Time interval between keep alive messages sent to the gateway.                                                                |
-|                       | .gateway-address                  | 0.0.0.0:26500       | The IP socket address of a gateway that the client can initially connect to. Must be in format host:port.                     |
-|                       | .ca-certificate-path              | default store       | Path to a root CA certificate to be used instead of the certificate in the default keystore.                                  |
+| Prefix                | Property                          | Default       | Description                                                                                                                                                       |
+|-----------------------|-----------------------------------|---------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| zeebe.client.cloud    | .cluster-id                       |               | The cluster ID when connecting to Camunda Cloud. Don't set this for a local Zeebe Broker.                                                                         |
+|                       | .client-id                        |               | The client ID to connect to Camunda Cloud. Don't set this for a local Zeebe Broker.                                                                               |
+|                       | .client-secret                    |               | The client secret to connect to Camunda Cloud. Don't set this for a local Zeebe Broker.                                                                           |
+|                       | .region                           | bru-2         | The region of the Camunda Cloud cluster.                                                                                                                          |
+|                       | .use-plain-text-connection        | true          | Whether to use plain text or a secure connection. This property is not evaluated if connecting to Camunda Cloud because that will always use a secure connection. |
+|                       | .default-request-timeout          | PT20S         | The request timeout used if not overridden by the command.                                                                                                        |
+|                       | .default-job-poll-interval        | 100           | The interval which a job worker is periodically polling for new jobs.                                                                                             |
+|                       | .default-job-timeout              | PT5M          | The timeout which is used when none is provided for a job worker.                                                                                                 |
+|                       | .default-message-time-to-live     | PT1H          | The time-to-live which is used when none is provided for a message.                                                                                               |
+|                       | .default-job-worker-name          | default       | The name of the worker which is used when none is set for a job worker.                                                                                           |
+|                       | .num-job-worker-execution-threads | 1             | The number of threads for invocation of job workers. Setting this value to 0 effectively disables subscriptions and workers.                                      |
+|                       | .keep-alive                       | PT45S         | Time interval between keep alive messages sent to the gateway.                                                                                                    |
+|                       | .gateway-address                  | 0.0.0.0:26500 | The IP socket address of a gateway that the client can initially connect to. Must be in format host:port.                                                         |
+|                       | .ca-certificate-path              | default store | Path to a root CA certificate to be used instead of the certificate in the default keystore.                                                                      |
 
 # 🏆Advanced Topics
 
