@@ -1,10 +1,11 @@
 # micronaut-zeebe-client
 
-This open source project allows you to integrate a [Zeebe](https://docs.camunda.io/docs/components/zeebe/technical-concepts/architecture/) Java Client into 
-your [Micronaut](https://micronaut.io) project (similar to [Spring Zeebe](https://github.com/camunda-community-hub/spring-zeebe/)). It allows you to e.g. deploy processes to [Camunda Cloud](https://docs.camunda.io/docs/components/concepts/what-is-camunda-cloud/), start and cancel instances and work 
-on [jobs](https://docs.camunda.io/docs/components/concepts/job-workers/).
+This open source project allows you to implement a [Zeebe](https://docs.camunda.io/docs/components/zeebe/technical-concepts/architecture/) client with the 
+[Micronaut Framework](https://micronaut.io). You can connect to [Camunda Cloud](https://docs.camunda.io/docs/components/concepts/what-is-camunda-cloud/) or your self-hosted Zeebe Cluster.
 
-The Micronaut Framework is known for its efficient use of resources. With this integration you can easily implement a Zeebe job worker to process tasks. If you use GraalVM you have startup times of about 35ms!
+With this integration you can implement a Zeebe job worker with minimal boilerplate code to process tasks. Additionally, you can use the client to deploy process models, and start and cancel process instances.
+
+The Micronaut Framework is known for its efficient use of resources. If you use GraalVM you have startup times of about 35ms!
 
 The integration is preconfigured with sensible defaults, so that you can get started with minimal configuration: simply add a dependency and your Camunda Cloud credentials in your Micronaut project!
 
@@ -173,6 +174,7 @@ You may use the following properties (typically in application.yml) to configure
 |                       | .client-id                        |               | The client ID to connect to Camunda Cloud. Don't set this for a local Zeebe Broker.                                                                               |
 |                       | .client-secret                    |               | The client secret to connect to Camunda Cloud. Don't set this for a local Zeebe Broker.                                                                           |
 |                       | .region                           | bru-2         | The region of the Camunda Cloud cluster.                                                                                                                          |
+|                       | .gateway-address                  | 0.0.0.0:26500 | The gateway address if you're not connecting to Camunda Cloud. Must be in format host:port.                                                                       |
 |                       | .use-plain-text-connection        | true          | Whether to use plain text or a secure connection. This property is not evaluated if connecting to Camunda Cloud because that will always use a secure connection. |
 |                       | .default-request-timeout          | PT20S         | The request timeout used if not overridden by the command.                                                                                                        |
 |                       | .default-job-poll-interval        | 100           | The interval which a job worker is periodically polling for new jobs.                                                                                             |
@@ -181,7 +183,6 @@ You may use the following properties (typically in application.yml) to configure
 |                       | .default-job-worker-name          | default       | The name of the worker which is used when none is set for a job worker.                                                                                           |
 |                       | .num-job-worker-execution-threads | 1             | The number of threads for invocation of job workers. Setting this value to 0 effectively disables subscriptions and workers.                                      |
 |                       | .keep-alive                       | PT45S         | Time interval between keep alive messages sent to the gateway.                                                                                                    |
-|                       | .gateway-address                  | 0.0.0.0:26500 | The IP socket address of a gateway that the client can initially connect to. Must be in format host:port.                                                         |
 |                       | .ca-certificate-path              | default store | Path to a root CA certificate to be used instead of the certificate in the default keystore.                                                                      |
 
 # 🏆Advanced Topics
