@@ -4,11 +4,11 @@ This open source project allows you to integrate a [Zeebe](https://docs.camunda.
 your [Micronaut](https://micronaut.io) project (similar to [Spring Zeebe](https://github.com/camunda-community-hub/spring-zeebe/)). It allows you to e.g. deploy processes to [Camunda Cloud](https://docs.camunda.io/docs/components/concepts/what-is-camunda-cloud/), start and cancel instances and work 
 on [jobs](https://docs.camunda.io/docs/components/concepts/job-workers/).
 
-Micronaut is known for its efficient use of resources. With this integration you can easily implement a Zeebe job worker to process tasks. If you use GraalVM you have startup times of about 35ms!
+The Micronaut Framework is known for its efficient use of resources. With this integration you can easily implement a Zeebe job worker to process tasks. If you use GraalVM you have startup times of about 35ms!
 
 The integration is preconfigured with sensible defaults, so that you can get started with minimal configuration: simply add a dependency and your Camunda Cloud credentials in your Micronaut project!
 
-If you are interested in using Camunda Platform on Micronaut instead, have a look at our open source project [micronaut-camunda-bpm](https://github.com/camunda-community-hub/micronaut-camunda-bpm).
+If you are interested in using Camunda Platform on a Micronaut application instead, have a look at our open source project [micronaut-camunda-bpm](https://github.com/camunda-community-hub/micronaut-camunda-bpm).
 
 ---
 _We're not aware of all installations of our Open Source project. However, we love to_
@@ -24,7 +24,7 @@ Do you want to try it out? Please jump to the [Getting Started](#getting-started
 
 Do you want to contribute to our open source project? Please read the [Contribution Guidelines](CONTRIBUTING.md) and [contact us](#contact).
 
-Micronaut + Camunda Cloud = :heart:
+Micronaut Framework + Camunda Cloud = :heart:
 
 [![Release](https://img.shields.io/github/v/release/camunda-community-hub/micronaut-zeebe-client.svg)](https://github.com/camunda-community-hub/micronaut-zeebe-client/releases)
 [![License](https://img.shields.io/:license-apache-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)
@@ -392,14 +392,14 @@ We use [Semantic Versioning](https://semver.org/).
 The following compatibility matrix shows the officially supported Micronaut and Zeebe versions for each release.
 Other combinations might also work but have not been tested.
 
-| Release | Micronaut | Zeebe |
+| Release | Micronaut Framework | Zeebe |
 |---------|-----------|-------|
 | 1.4.0   | 3.3.0     | 1.3.2 |
 
 <details>
 <summary>Click to see older releases</summary>
 
-| Release |Micronaut | Zeebe |
+| Release |Micronaut Framework | Zeebe |
 |---------|--------|---------|
 | 1.3.1   | 3.3.0  | 1.3.2   |
 | 1.3.0   | 3.3.0  | 1.3.1   |
