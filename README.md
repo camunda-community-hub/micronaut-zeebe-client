@@ -421,7 +421,8 @@ Download of Releases:
 
 # 📆Publications
 
-TODO
+* 2022-02: [Bringing Cloud Native Process Automation to the Micronaut Framework](https://www.novatec-gmbh.de/en/blog/bringing-cloud-native-process-automation-to-micronaut/)  
+  Blogpost by Tobias Schäfer and Stefan Schultz
 
 # 📨Contact
 
