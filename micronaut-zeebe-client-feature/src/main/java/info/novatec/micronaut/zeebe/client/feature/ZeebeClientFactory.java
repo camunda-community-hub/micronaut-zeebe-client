@@ -38,24 +38,26 @@ public class ZeebeClientFactory {
 
     @Singleton
     public ZeebeClient buildClient(Configuration configuration) {
+        ZeebeClient zeebeClient = createZeebeClientBuilder(configuration).build();
+        log.info("ZeebeClient is configured to connect to gateway: {}", zeebeClient.getConfiguration().getGatewayAddress());
+        return zeebeClient;
+    }
 
+    protected ZeebeClientBuilder createZeebeClientBuilder(Configuration configuration) {
         ZeebeClientBuilder zeebeClientBuilder = isCloudConfigurationPresent(configuration)
                 ? createCloudClient(configuration)
-                : ZeebeClient.newClientBuilder().usePlaintext();
+                : createDefaultClient(configuration);
 
         configuration.getDefaultRequestTimeout().ifPresent(timeout -> zeebeClientBuilder.defaultRequestTimeout(Duration.parse(timeout)));
         configuration.getDefaultJobPollInterval().ifPresent(duration -> zeebeClientBuilder.defaultJobPollInterval(Duration.ofMillis(duration)));
         configuration.getDefaultJobTimeout().ifPresent(timeout -> zeebeClientBuilder.defaultJobTimeout(Duration.parse(timeout)));
-        configuration.getDefaultMessageTimeToLive().ifPresent( ttl -> zeebeClientBuilder.defaultMessageTimeToLive(Duration.parse(ttl)));
+        configuration.getDefaultMessageTimeToLive().ifPresent(ttl -> zeebeClientBuilder.defaultMessageTimeToLive(Duration.parse(ttl)));
         configuration.getDefaultJobWorkerName().ifPresent(zeebeClientBuilder::defaultJobWorkerName);
         configuration.getGatewayAddress().ifPresent(zeebeClientBuilder::gatewayAddress);
         configuration.getNumJobWorkerExecutionThreads().ifPresent(zeebeClientBuilder::numJobWorkerExecutionThreads);
         configuration.getKeepAlive().ifPresent(keepAlive -> zeebeClientBuilder.keepAlive(Duration.parse(keepAlive)));
         configuration.getCaCertificatePath().ifPresent(zeebeClientBuilder::caCertificatePath);
-
-        ZeebeClient zeebeClient = zeebeClientBuilder.build();
-        log.info("ZeebeClient is configured to connect to gateway: {}", zeebeClient.getConfiguration().getGatewayAddress());
-        return zeebeClient;
+        return zeebeClientBuilder;
     }
 
     protected ZeebeClientBuilder createCloudClient(Configuration configuration) {
@@ -67,10 +69,18 @@ public class ZeebeClientFactory {
         return builder;
     }
 
+    protected ZeebeClientBuilder createDefaultClient(Configuration configuration) {
+        ZeebeClientBuilder zeebeClientBuilder = ZeebeClient.newClientBuilder();
+        if (configuration.getUsePlainTextConnection().orElse(true)) {
+            zeebeClientBuilder.usePlaintext();
+        }
+
+        return zeebeClientBuilder;
+    }
+
     protected boolean isCloudConfigurationPresent(Configuration configuration) {
         return configuration.getClusterId().isPresent()
                 && configuration.getClientId().isPresent()
                 && configuration.getClientSecret().isPresent();
     }
-
 }

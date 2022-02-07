@@ -1,14 +1,15 @@
 # micronaut-zeebe-client
 
-This open source project allows you to integrate a [Zeebe](https://docs.camunda.io/docs/components/zeebe/technical-concepts/architecture/) Java Client into 
-your [Micronaut](https://micronaut.io) project (similar to [Spring Zeebe](https://github.com/camunda-community-hub/spring-zeebe/)). It allows you to e.g. deploy processes to [Camunda Cloud](https://docs.camunda.io/docs/components/concepts/what-is-camunda-cloud/), start and cancel instances and work 
-on [jobs](https://docs.camunda.io/docs/components/concepts/job-workers/).
+This open source project allows you to implement a [Zeebe](https://docs.camunda.io/docs/components/zeebe/technical-concepts/architecture/) client with the 
+[Micronaut Framework](https://micronaut.io). You can connect to [Camunda Cloud](https://docs.camunda.io/docs/components/concepts/what-is-camunda-cloud/) or your self-hosted Zeebe Cluster.
 
-Micronaut is known for its efficient use of resources. With this integration you can easily implement a Zeebe job worker to process tasks. If you use GraalVM you have startup times of about 35ms!
+With this integration you can implement a Zeebe job worker with minimal boilerplate code to process tasks. Additionally, you can use the client to deploy process models, and start and cancel process instances.
+
+The Micronaut Framework is known for its efficient use of resources. If you use GraalVM you have startup times of about 35ms!
 
 The integration is preconfigured with sensible defaults, so that you can get started with minimal configuration: simply add a dependency and your Camunda Cloud credentials in your Micronaut project!
 
-If you are interested in using Camunda Platform on Micronaut instead, have a look at our open source project [micronaut-camunda-bpm](https://github.com/camunda-community-hub/micronaut-camunda-bpm).
+If you are interested in using Camunda Platform on a Micronaut application instead, have a look at our open source project [micronaut-camunda-bpm](https://github.com/camunda-community-hub/micronaut-camunda-bpm).
 
 ---
 _We're not aware of all installations of our Open Source project. However, we love to_
@@ -24,7 +25,7 @@ Do you want to try it out? Please jump to the [Getting Started](#getting-started
 
 Do you want to contribute to our open source project? Please read the [Contribution Guidelines](CONTRIBUTING.md) and [contact us](#contact).
 
-Micronaut + Camunda Cloud = :heart:
+Micronaut Framework + Camunda Cloud = :heart:
 
 [![Release](https://img.shields.io/github/v/release/camunda-community-hub/micronaut-zeebe-client.svg)](https://github.com/camunda-community-hub/micronaut-zeebe-client/releases)
 [![License](https://img.shields.io/:license-apache-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)
@@ -83,7 +84,7 @@ You have the following options to integrate the Zeebe integration:
 
   Add the dependency to the build.gradle file:
   ```groovy
-  implementation("info.novatec:micronaut-zeebe-client-feature:1.3.1")
+  implementation("info.novatec:micronaut-zeebe-client-feature:1.4.0")
   ```
   </details>
 
@@ -95,7 +96,7 @@ You have the following options to integrate the Zeebe integration:
   <dependency>
     <groupId>info.novatec</groupId>
     <artifactId>micronaut-zeebe-client-feature</artifactId>
-    <version>1.3.1</version>
+    <version>1.4.0</version>
   </dependency>
   ```
   </details>
@@ -167,21 +168,22 @@ The annotation accepts the following properties, more will be added later:
 
 You may use the following properties (typically in application.yml) to configure the Zeebe client.
 
-| Prefix                | Property                          | Default             | Description                                                                                                                   |
-|-----------------------|-----------------------------------|---------------------|-------------------------------------------------------------------------------------------------------------------------------|
-| zeebe.client.cloud    | .cluster-id                       |                     | The cluster ID when connecting to Camunda Cloud. Don't set this for a local Zeebe Broker.                                     |
-|                       | .client-id                        |                     | The client ID to connect to Camunda Cloud. Don't set this for a local Zeebe Broker.                                           |
-|                       | .client-secret                    |                     | The client secret to connect to Camunda Cloud. Don't set this for a local Zeebe Broker.                                       |
-|                       | .region                           | bru-2               | The region of the Camunda Cloud cluster.                                                                                      |
-|                       | .default-request-timeout          | PT20S               | The request timeout used if not overridden by the command.                                                                    |
-|                       | .default-job-poll-interval        | 100                 | The interval which a job worker is periodically polling for new jobs.                                                         |
-|                       | .default-job-timeout              | PT5M                | The timeout which is used when none is provided for a job worker.                                                             |
-|                       | .default-message-time-to-live     | PT1H                | The time-to-live which is used when none is provided for a message.                                                           |
-|                       | .default-job-worker-name          | default             | The name of the worker which is used when none is set for a job worker.                                                       |
-|                       | .num-job-worker-execution-threads | 1                   | The number of threads for invocation of job workers. Setting this value to 0 effectively disables subscriptions and workers.  |
-|                       | .keep-alive                       | PT45S               | Time interval between keep alive messages sent to the gateway.                                                                |
-|                       | .gateway-address                  | 0.0.0.0:26500       | The IP socket address of a gateway that the client can initially connect to. Must be in format host:port.                     |
-|                       | .ca-certificate-path              | default store       | Path to a root CA certificate to be used instead of the certificate in the default keystore.                                  |
+| Prefix                | Property                          | Default       | Description                                                                                                                                                       |
+|-----------------------|-----------------------------------|---------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| zeebe.client.cloud    | .cluster-id                       |               | The cluster ID when connecting to Camunda Cloud. Don't set this for a local Zeebe Broker.                                                                         |
+|                       | .client-id                        |               | The client ID to connect to Camunda Cloud. Don't set this for a local Zeebe Broker.                                                                               |
+|                       | .client-secret                    |               | The client secret to connect to Camunda Cloud. Don't set this for a local Zeebe Broker.                                                                           |
+|                       | .region                           | bru-2         | The region of the Camunda Cloud cluster.                                                                                                                          |
+|                       | .gateway-address                  | 0.0.0.0:26500 | The gateway address if you're not connecting to Camunda Cloud. Must be in format host:port.                                                                       |
+|                       | .use-plain-text-connection        | true          | Whether to use plain text or a secure connection. This property is not evaluated if connecting to Camunda Cloud because that will always use a secure connection. |
+|                       | .default-request-timeout          | PT20S         | The request timeout used if not overridden by the command.                                                                                                        |
+|                       | .default-job-poll-interval        | 100           | The interval which a job worker is periodically polling for new jobs.                                                                                             |
+|                       | .default-job-timeout              | PT5M          | The timeout which is used when none is provided for a job worker.                                                                                                 |
+|                       | .default-message-time-to-live     | PT1H          | The time-to-live which is used when none is provided for a message.                                                                                               |
+|                       | .default-job-worker-name          | default       | The name of the worker which is used when none is set for a job worker.                                                                                           |
+|                       | .num-job-worker-execution-threads | 1             | The number of threads for invocation of job workers. Setting this value to 0 effectively disables subscriptions and workers.                                      |
+|                       | .keep-alive                       | PT45S         | Time interval between keep alive messages sent to the gateway.                                                                                                    |
+|                       | .ca-certificate-path              | default store | Path to a root CA certificate to be used instead of the certificate in the default keystore.                                                                      |
 
 # 🏆Advanced Topics
 
@@ -391,24 +393,25 @@ We use [Semantic Versioning](https://semver.org/).
 The following compatibility matrix shows the officially supported Micronaut and Zeebe versions for each release.
 Other combinations might also work but have not been tested.
 
-| Release | Micronaut | Zeebe |
+| Release | Micronaut Framework | Zeebe |
 |---------|-----------|-------|
-| 1.3.1   | 3.3.0     | 1.3.2 |
+| 1.4.0   | 3.3.0     | 1.3.2 |
 
 <details>
 <summary>Click to see older releases</summary>
 
-| Release |Micronaut | Zeebe |
-|--------|--------|--------|
-|  1.3.0 | 3.3.0  | 1.3.1  |
-|  1.2.2 | 3.2.7  | 1.3.1  |
-|  1.2.1 | 3.2.7  | 1.3.1  |
-|  1.2.0 | 3.2.6  | 1.3.0  |
-|  1.1.1 | 3.2.3  | 1.2.7  |
-|  1.1.0 | 3.2.0  | 1.2.4  |
-|  1.0.1 | 3.1.3  | 1.2.4  |
-|  1.0.0 | 3.1.0  | 1.2.2  |
-|  0.0.1 | 3.0.2  | 1.1.3  |
+| Release |Micronaut Framework | Zeebe |
+|---------|--------|---------|
+| 1.3.1   | 3.3.0  | 1.3.2   |
+| 1.3.0   | 3.3.0  | 1.3.1   |
+| 1.2.2   | 3.2.7  | 1.3.1   |
+| 1.2.1   | 3.2.7  | 1.3.1   |
+| 1.2.0   | 3.2.6  | 1.3.0   |
+| 1.1.1   | 3.2.3  | 1.2.7   |
+| 1.1.0   | 3.2.0  | 1.2.4   |
+| 1.0.1   | 3.1.3  | 1.2.4   |
+| 1.0.0   | 3.1.0  | 1.2.2   |
+| 0.0.1   | 3.0.2  | 1.1.3   |
 
 </details>
 
@@ -418,7 +421,8 @@ Download of Releases:
 
 # 📆Publications
 
-TODO
+* 2022-02: [Bringing Cloud Native Process Automation to the Micronaut Framework](https://www.novatec-gmbh.de/en/blog/bringing-cloud-native-process-automation-to-micronaut/)  
+  Blogpost by Tobias Schäfer and Stefan Schultz
 
 # 📨Contact
 
