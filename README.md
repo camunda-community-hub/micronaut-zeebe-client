@@ -39,11 +39,12 @@ Micronaut Framework + Camunda Cloud = :heart:
 
 * ✨ [Features](#features)
 * 🚀 [Getting Started](#getting-started)
-  * [Supported JDKs](#supported-jdks)
   * [Dependency Management](#dependency-management)
   * [Creating a Client](#creating-a-client)
   * [ZeebeWorker Annotation](#zeebeworker-annotation)
   * [Configuration](#configuration)
+  * [Examples](#examples)
+  * [Supported JDKs](#supported-jdks)
 * 🏆 [Advanced Topics](#advanced-topics)
   * [Process Tests](#process-tests)
   * [Monitoring](#monitoring)  
@@ -60,17 +61,6 @@ Micronaut Framework + Camunda Cloud = :heart:
 # 🚀Getting Started
 
 This section describes what needs to be done to use `micronaut-zeebe-client-feature` in a Micronaut project.
-
-Here are some example applications:
-* [Example application](https://github.com/tobiasschaefer/micronaut-zeebe-example) which uses the feature.
-* [Internal example application](/micronaut-zeebe-client-example) used during development. Remember that you need to start the [Zeebe Cluster](/micronaut-zeebe-server-example) first.
-
-## Supported JDKs
-
-We officially support the following JDKs:
-* JDK 8 (LTS)
-* JDK 11 (LTS)
-* JDK 17 (LTS)
 
 ## Dependency Management
 
@@ -184,6 +174,18 @@ You may use the following properties (typically in application.yml) to configure
 |                       | .num-job-worker-execution-threads | 1             | The number of threads for invocation of job workers. Setting this value to 0 effectively disables subscriptions and workers.                                      |
 |                       | .keep-alive                       | PT45S         | Time interval between keep alive messages sent to the gateway.                                                                                                    |
 |                       | .ca-certificate-path              | default store | Path to a root CA certificate to be used instead of the certificate in the default keystore.                                                                      |
+
+## Examples
+Here are some example applications:
+* [Example application](https://github.com/tobiasschaefer/micronaut-zeebe-example) which uses the feature.
+* [Internal example application](/micronaut-zeebe-client-example) used during development. Remember that you need to start the [Zeebe Cluster](/micronaut-zeebe-server-example) first.
+
+## Supported JDKs
+
+We officially support the following JDKs:
+* JDK 8 (LTS)
+* JDK 11 (LTS)
+* JDK 17 (LTS)
 
 # 🏆Advanced Topics
 
