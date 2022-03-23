@@ -88,6 +88,12 @@ You have the following options to integrate the Zeebe integration:
     <artifactId>micronaut-zeebe-client-feature</artifactId>
     <version>1.5.0</version>
   </dependency>
+  <!-- workaround for https://github.com/camunda-community-hub/micronaut-zeebe-client/issues/88 -->
+  <dependency>
+    <groupId>com.google.protobuf</groupId>
+    <artifactId>protobuf-java</artifactId>
+    <version>3.19.3</version>
+  </dependency>
   ```
   </details>
 
