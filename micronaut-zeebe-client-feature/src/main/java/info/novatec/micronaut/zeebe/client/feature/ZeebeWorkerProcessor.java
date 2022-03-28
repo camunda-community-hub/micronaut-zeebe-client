@@ -19,6 +19,7 @@ import io.camunda.zeebe.client.ZeebeClient;
 import io.camunda.zeebe.client.api.response.ActivatedJob;
 import io.camunda.zeebe.client.api.worker.JobClient;
 import io.camunda.zeebe.client.api.worker.JobWorker;
+import io.camunda.zeebe.client.api.worker.JobWorkerBuilderStep1;
 import io.micronaut.context.BeanContext;
 import io.micronaut.context.processor.ExecutableMethodProcessor;
 import io.micronaut.core.annotation.AnnotationValue;
@@ -30,6 +31,7 @@ import jakarta.inject.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -71,10 +73,21 @@ public class ZeebeWorkerProcessor implements ExecutableMethodProcessor<ZeebeWork
             Object bean = beanContext.getBean(declaringType);
             if (annotation != null) {
                 annotation.stringValue("type").ifPresent(type -> {
-                    JobWorker jobWorker = zeebeClient
+                    JobWorkerBuilderStep1.JobWorkerBuilderStep3 jobWorkerBuilderStep3 = zeebeClient
                             .newWorker()
                             .jobType(type)
-                            .handler((client, job) -> ((ExecutableMethod) method).invoke(bean, client, job)).open();
+                            .handler((client, job) -> ((ExecutableMethod) method).invoke(bean, client, job));
+                    annotation.stringValue("timeout").ifPresent(timeout -> {
+                        jobWorkerBuilderStep3.timeout(Duration.parse(timeout));
+                    });
+                    annotation.intValue("maxJobsActive").ifPresent(jobWorkerBuilderStep3::maxJobsActive);
+                    annotation.stringValue("requestTimeout").ifPresent(requestTimeout -> {
+                        jobWorkerBuilderStep3.requestTimeout(Duration.parse(requestTimeout));
+                    });
+                    annotation.stringValue("pollInterval").ifPresent(pollInterval -> {
+                        jobWorkerBuilderStep3.pollInterval(Duration.parse(pollInterval));
+                    });
+                    JobWorker jobWorker = jobWorkerBuilderStep3.open();
                     jobWorkers.add(jobWorker);
                     log.info("Zeebe client ({}#{}) subscribed to type '{}'", bean.getClass().getName(), method.getName(), type);
                 });

@@ -156,9 +156,15 @@ public class ExampleHandler implements JobHandler {
 ## ZeebeWorker Annotation
 The annotation accepts the following properties, more will be added later:
 
-| Property                    | Default | Description                                                                  |
-|-----------------------------|---------|------------------------------------------------------------------------------|
-| type                        |         | The mandatory name the client subscribes to                          |
+| Property | Description                                                                                               |
+|----------|-----------------------------------------------------------------------------------------------------------|
+| type     | The mandatory the type of jobs to work on.                                                                |
+| timeout  | The optional time for how long a job is exclusively assigned for this worker, e.g "PT15M"                 |
+| maxJobsActive  | The optional maximum number of jobs which will be exclusively activated for this worker at the same time. |
+| requestTimeout | The optional request timeout for activate job request used to poll for new job, e.g. PT20S.         |
+| pollInterval  | The optional maximal interval between polling for new jobs, e.g. PT0.1S for 100ms.                   |
+
+Note: If no value is provided for an optional property then the default will be taken from the configuration as documented below.
 
 ## Configuration
 
