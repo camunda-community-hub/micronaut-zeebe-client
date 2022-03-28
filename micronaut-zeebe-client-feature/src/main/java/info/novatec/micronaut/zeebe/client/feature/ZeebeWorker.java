@@ -16,7 +16,6 @@
 package info.novatec.micronaut.zeebe.client.feature;
 
 import io.micronaut.context.annotation.Executable;
-import io.micronaut.context.annotation.Parallel;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -32,7 +31,6 @@ import java.time.Duration;
 @Target(value = {ElementType.TYPE, ElementType.METHOD})
 @Documented
 @Executable(processOnStartup = true)
-@Parallel
 public @interface ZeebeWorker {
 
     /**
