@@ -33,7 +33,7 @@ import java.util.Optional;
 public interface Configuration {
 
     /**
-     * The clusterId when connecting to Camunda Cloud. Don't set this for a local Zeebe Broker.
+     * The clusterId when connecting to Camunda Platform 8. Don't set this for a local Zeebe Broker.
      * @see io.camunda.zeebe.client.ZeebeClientCloudBuilderStep1#withClusterId(String) 
      *
      * @return the clusterId
@@ -41,7 +41,7 @@ public interface Configuration {
     Optional<String> getClusterId();
 
     /**
-     * The clientId to connect to Camunda Cloud. Don't set this for a local Zeebe Broker.
+     * The clientId to connect to Camunda Platform 8. Don't set this for a local Zeebe Broker.
      * @see io.camunda.zeebe.client.ZeebeClientCloudBuilderStep1.ZeebeClientCloudBuilderStep2#withClientId(String) 
      *
      * @return the the clientId
@@ -49,7 +49,7 @@ public interface Configuration {
     Optional<String> getClientId();
 
     /**
-     * The clientSecret to connect to Camunda Cloud. Don't set this for a local Zeebe Broker.
+     * The clientSecret to connect to Camunda Platform 8. Don't set this for a local Zeebe Broker.
      * @see io.camunda.zeebe.client.ZeebeClientCloudBuilderStep1.ZeebeClientCloudBuilderStep2.ZeebeClientCloudBuilderStep3#withClientSecret(String) 
      *
      * @return the name of the clientSecret
@@ -57,7 +57,7 @@ public interface Configuration {
     Optional<String> getClientSecret();
 
     /**
-     * The region of the cloud cluster
+     * The region of the Camunda Platform 8 cluster
      * @see io.camunda.zeebe.client.ZeebeClientCloudBuilderStep1.ZeebeClientCloudBuilderStep2.ZeebeClientCloudBuilderStep3.ZeebeClientCloudBuilderStep4#withRegion(String) 
      *
      * @return the region where your cluster is located
@@ -65,7 +65,7 @@ public interface Configuration {
     Optional<String> getRegion();
 
     /**
-     * Whether to connect with plain text or SSL/TLS. This option is not evaluated when connecting to Camunda Cloud which always uses a secure connection via SSL/TLS.
+     * Whether to connect with plain text or SSL/TLS. This option is not evaluated when connecting to Camunda Platform 8 which always uses a secure connection via SSL/TLS.
      * @see ZeebeClientBuilder#usePlaintext()
      *
      * @return whether the connection is using plain text or SSL/TLS

@@ -1,13 +1,13 @@
 # micronaut-zeebe-client
 
 This open source project allows you to implement a [Zeebe](https://docs.camunda.io/docs/components/zeebe/technical-concepts/architecture/) client with the 
-[Micronaut Framework](https://micronaut.io). You can connect to [Camunda Cloud](https://docs.camunda.io/docs/components/concepts/what-is-camunda-cloud/) or your self-hosted Zeebe Cluster.
+[Micronaut Framework](https://micronaut.io). You can connect to [Camunda Platform 8](https://docs.camunda.io/docs/components/concepts/what-is-camunda-cloud/) (previously Camunda Cloud) or your self-managed Zeebe Cluster.
 
 With this integration you can implement a Zeebe job worker with minimal boilerplate code to process tasks. Additionally, you can use the client to deploy process models, and start and cancel process instances.
 
 The Micronaut Framework is known for its efficient use of resources. If you use GraalVM you have startup times of about 35ms!
 
-The integration is preconfigured with sensible defaults, so that you can get started with minimal configuration: simply add a dependency and your Camunda Cloud credentials in your Micronaut project!
+The integration is preconfigured with sensible defaults, so that you can get started with minimal configuration: simply add a dependency and your Camunda Platform 8 credentials in your Micronaut project!
 
 If you are interested in using Camunda Platform on a Micronaut application instead, have a look at our open source project [micronaut-camunda-bpm](https://github.com/camunda-community-hub/micronaut-camunda-bpm).
 
@@ -25,7 +25,7 @@ Do you want to try it out? Please jump to the [Getting Started](#getting-started
 
 Do you want to contribute to our open source project? Please read the [Contribution Guidelines](CONTRIBUTING.md) and [contact us](#contact).
 
-Micronaut Framework + Camunda Cloud = :heart:
+Micronaut Framework + Camunda Platform 8 = :heart:
 
 [![Release](https://img.shields.io/github/v/release/camunda-community-hub/micronaut-zeebe-client.svg)](https://github.com/camunda-community-hub/micronaut-zeebe-client/releases)
 [![License](https://img.shields.io/:license-apache-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)
@@ -172,12 +172,12 @@ You may use the following properties (typically in application.yml) to configure
 
 | Prefix                | Property                          | Default       | Description                                                                                                                                                       |
 |-----------------------|-----------------------------------|---------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| zeebe.client.cloud    | .cluster-id                       |               | The cluster ID when connecting to Camunda Cloud. Don't set this for a local Zeebe Broker.                                                                         |
-|                       | .client-id                        |               | The client ID to connect to Camunda Cloud. Don't set this for a local Zeebe Broker.                                                                               |
-|                       | .client-secret                    |               | The client secret to connect to Camunda Cloud. Don't set this for a local Zeebe Broker.                                                                           |
-|                       | .region                           | bru-2         | The region of the Camunda Cloud cluster.                                                                                                                          |
-|                       | .gateway-address                  | 0.0.0.0:26500 | The gateway address if you're not connecting to Camunda Cloud. Must be in format host:port.                                                                       |
-|                       | .use-plain-text-connection        | true          | Whether to use plain text or a secure connection. This property is not evaluated if connecting to Camunda Cloud because that will always use a secure connection. |
+| zeebe.client.cloud    | .cluster-id                       |               | The cluster ID when connecting to Camunda Platform 8. Don't set this for a local Zeebe Broker.                                                                    |
+|                       | .client-id                        |               | The client ID to connect to Camunda Platform 8. Don't set this for a local Zeebe Broker.                                                                               |
+|                       | .client-secret                    |               | The client secret to connect to Camunda Platform 8. Don't set this for a local Zeebe Broker.                                                                           |
+|                       | .region                           | bru-2         | The region of the Camunda Platform 8 cluster.                                                                                                                          |
+|                       | .gateway-address                  | 0.0.0.0:26500 | The gateway address if you're not connecting to Camunda Platform 8. Must be in format host:port.                                                                       |
+|                       | .use-plain-text-connection        | true          | Whether to use plain text or a secure connection. This property is not evaluated if connecting to Camunda Platform 8 because that will always use a secure connection. |
 |                       | .default-request-timeout          | PT20S         | The request timeout used if not overridden by the command.                                                                                                        |
 |                       | .default-job-poll-interval        | 100           | The interval which a job worker is periodically polling for new jobs.                                                                                             |
 |                       | .default-job-timeout              | PT5M          | The timeout which is used when none is provided for a job worker.                                                                                                 |
