@@ -409,13 +409,14 @@ Other combinations might also work but have not been tested.
 
 | Release | Micronaut Framework | Zeebe |
 |---------|---------------------|-------|
-| 1.6.0   | 3.4.0               | 1.3.5 |
+| 1.7.0   | 3.4.1               | 8.0.0 |
 
 <details>
 <summary>Click to see older releases</summary>
 
 | Release |Micronaut Framework | Zeebe |
 |---------|--------|---------|
+| 1.6.0   | 3.4.0               | 1.3.5 |
 | 1.5.0   | 3.4.0               | 1.3.5 |
 | 1.4.1   | 3.3.4               | 1.3.5 |
 | 1.4.0   | 3.3.0     | 1.3.2 |
