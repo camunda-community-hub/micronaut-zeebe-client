@@ -1,5 +1,14 @@
 # micronaut-zeebe-client
 
+[![Release](https://img.shields.io/github/v/release/camunda-community-hub/micronaut-zeebe-client.svg)](https://github.com/camunda-community-hub/micronaut-zeebe-client/releases)
+[![License](https://img.shields.io/:license-apache-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)
+[![Continuous Integration](https://github.com/camunda-community-hub/micronaut-zeebe-client/workflows/Continuous%20Integration/badge.svg)](https://github.com/camunda-community-hub/micronaut-zeebe-client/actions)
+[![GitHub Discussions](https://img.shields.io/badge/Forum-GitHub_Discussions-blue)](https://github.com/camunda-community-hub/micronaut-zeebe-client/discussions)
+
+[![](https://img.shields.io/badge/Community%20Extension-An%20open%20source%20community%20maintained%20project-FF4700)](https://github.com/camunda-community-hub/community)
+![Compatible with: Camunda Platform 8](https://img.shields.io/badge/Compatible%20with-Camunda%20Platform%208-0072Ce)
+[![](https://img.shields.io/badge/Lifecycle-Incubating-blue)](https://github.com/Camunda-Community-Hub/community/blob/main/extension-lifecycle.md#incubating-)
+
 This open source project allows you to implement a [Zeebe](https://docs.camunda.io/docs/components/zeebe/technical-concepts/architecture/) client with the 
 [Micronaut Framework](https://micronaut.io). You can connect to [Camunda Platform 8](https://docs.camunda.io/docs/components/concepts/what-is-camunda-cloud/) (previously Camunda Cloud) or your self-managed Zeebe Cluster.
 
@@ -26,14 +35,6 @@ Do you want to try it out? Please jump to the [Getting Started](#getting-started
 Do you want to contribute to our open source project? Please read the [Contribution Guidelines](CONTRIBUTING.md) and [contact us](#contact).
 
 Micronaut Framework + Camunda Platform 8 = :heart:
-
-[![Release](https://img.shields.io/github/v/release/camunda-community-hub/micronaut-zeebe-client.svg)](https://github.com/camunda-community-hub/micronaut-zeebe-client/releases)
-[![License](https://img.shields.io/:license-apache-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)
-[![Continuous Integration](https://github.com/camunda-community-hub/micronaut-zeebe-client/workflows/Continuous%20Integration/badge.svg)](https://github.com/camunda-community-hub/micronaut-zeebe-client/actions)
-[![GitHub Discussions](https://img.shields.io/badge/Forum-GitHub_Discussions-blue)](https://github.com/camunda-community-hub/micronaut-zeebe-client/discussions)
-
-[![](https://img.shields.io/badge/Community%20Extension-An%20open%20source%20community%20maintained%20project-FF4700)](https://github.com/camunda-community-hub/community)
-[![](https://img.shields.io/badge/Lifecycle-Incubating-blue)](https://github.com/Camunda-Community-Hub/community/blob/main/extension-lifecycle.md#incubating-)
 
 # Table of Contents
 
