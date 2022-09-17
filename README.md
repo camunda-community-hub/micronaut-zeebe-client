@@ -1,13 +1,22 @@
 # micronaut-zeebe-client
 
+[![Release](https://img.shields.io/github/v/release/camunda-community-hub/micronaut-zeebe-client.svg)](https://github.com/camunda-community-hub/micronaut-zeebe-client/releases)
+[![License](https://img.shields.io/:license-apache-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)
+[![Continuous Integration](https://github.com/camunda-community-hub/micronaut-zeebe-client/workflows/Continuous%20Integration/badge.svg)](https://github.com/camunda-community-hub/micronaut-zeebe-client/actions)
+[![GitHub Discussions](https://img.shields.io/badge/Forum-GitHub_Discussions-blue)](https://github.com/camunda-community-hub/micronaut-zeebe-client/discussions)
+
+[![](https://img.shields.io/badge/Community%20Extension-An%20open%20source%20community%20maintained%20project-FF4700)](https://github.com/camunda-community-hub/community)
+![Compatible with: Camunda Platform 8](https://img.shields.io/badge/Compatible%20with-Camunda%20Platform%208-0072Ce)
+[![](https://img.shields.io/badge/Lifecycle-Incubating-blue)](https://github.com/Camunda-Community-Hub/community/blob/main/extension-lifecycle.md#incubating-)
+
 This open source project allows you to implement a [Zeebe](https://docs.camunda.io/docs/components/zeebe/technical-concepts/architecture/) client with the 
-[Micronaut Framework](https://micronaut.io). You can connect to [Camunda Cloud](https://docs.camunda.io/docs/components/concepts/what-is-camunda-cloud/) or your self-hosted Zeebe Cluster.
+[Micronaut Framework](https://micronaut.io). You can connect to [Camunda Platform 8](https://docs.camunda.io/docs/components/concepts/what-is-camunda-cloud/) (previously Camunda Cloud) or your self-managed Zeebe Cluster.
 
 With this integration you can implement a Zeebe job worker with minimal boilerplate code to process tasks. Additionally, you can use the client to deploy process models, and start and cancel process instances.
 
 The Micronaut Framework is known for its efficient use of resources. If you use GraalVM you have startup times of about 35ms!
 
-The integration is preconfigured with sensible defaults, so that you can get started with minimal configuration: simply add a dependency and your Camunda Cloud credentials in your Micronaut project!
+The integration is preconfigured with sensible defaults, so that you can get started with minimal configuration: simply add a dependency and your Camunda Platform 8 credentials in your Micronaut project!
 
 If you are interested in using Camunda Platform on a Micronaut application instead, have a look at our open source project [micronaut-camunda-bpm](https://github.com/camunda-community-hub/micronaut-camunda-bpm).
 
@@ -25,25 +34,18 @@ Do you want to try it out? Please jump to the [Getting Started](#getting-started
 
 Do you want to contribute to our open source project? Please read the [Contribution Guidelines](CONTRIBUTING.md) and [contact us](#contact).
 
-Micronaut Framework + Camunda Cloud = :heart:
-
-[![Release](https://img.shields.io/github/v/release/camunda-community-hub/micronaut-zeebe-client.svg)](https://github.com/camunda-community-hub/micronaut-zeebe-client/releases)
-[![License](https://img.shields.io/:license-apache-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)
-[![Continuous Integration](https://github.com/camunda-community-hub/micronaut-zeebe-client/workflows/Continuous%20Integration/badge.svg)](https://github.com/camunda-community-hub/micronaut-zeebe-client/actions)
-[![GitHub Discussions](https://img.shields.io/badge/Forum-GitHub_Discussions-blue)](https://github.com/camunda-community-hub/micronaut-zeebe-client/discussions)
-
-[![](https://img.shields.io/badge/Community%20Extension-An%20open%20source%20community%20maintained%20project-FF4700)](https://github.com/camunda-community-hub/community)
-[![](https://img.shields.io/badge/Lifecycle-Incubating-blue)](https://github.com/Camunda-Community-Hub/community/blob/main/extension-lifecycle.md#incubating-)
+Micronaut Framework + Camunda Platform 8 = :heart:
 
 # Table of Contents
 
 * ✨ [Features](#features)
 * 🚀 [Getting Started](#getting-started)
-  * [Supported JDKs](#supported-jdks)
   * [Dependency Management](#dependency-management)
   * [Creating a Client](#creating-a-client)
   * [ZeebeWorker Annotation](#zeebeworker-annotation)
   * [Configuration](#configuration)
+  * [Examples](#examples)
+  * [Supported JDKs](#supported-jdks)
 * 🏆 [Advanced Topics](#advanced-topics)
   * [Process Tests](#process-tests)
   * [Monitoring](#monitoring)  
@@ -61,17 +63,6 @@ Micronaut Framework + Camunda Cloud = :heart:
 
 This section describes what needs to be done to use `micronaut-zeebe-client-feature` in a Micronaut project.
 
-Here are some example applications:
-* [Example application](https://github.com/tobiasschaefer/micronaut-zeebe-example) which uses the feature.
-* [Internal example application](/micronaut-zeebe-client-example) used during development. Remember that you need to start the [Zeebe Cluster](/micronaut-zeebe-server-example) first.
-
-## Supported JDKs
-
-We officially support the following JDKs:
-* JDK 8 (LTS)
-* JDK 11 (LTS)
-* JDK 17 (LTS)
-
 ## Dependency Management
 
 The Zeebe integration works with both Gradle and Maven, but we recommend using Gradle because it has better Micronaut Support.
@@ -84,7 +75,7 @@ You have the following options to integrate the Zeebe integration:
 
   Add the dependency to the build.gradle file:
   ```groovy
-  implementation("info.novatec:micronaut-zeebe-client-feature:1.4.0")
+  implementation("info.novatec:micronaut-zeebe-client-feature:1.9.0")
   ```
   </details>
 
@@ -96,7 +87,13 @@ You have the following options to integrate the Zeebe integration:
   <dependency>
     <groupId>info.novatec</groupId>
     <artifactId>micronaut-zeebe-client-feature</artifactId>
-    <version>1.4.0</version>
+    <version>1.9.0</version>
+  </dependency>
+  <!-- workaround for https://github.com/camunda-community-hub/micronaut-zeebe-client/issues/88 -->
+  <dependency>
+    <groupId>com.google.protobuf</groupId>
+    <artifactId>protobuf-java</artifactId>
+    <version>3.19.3</version>
   </dependency>
   ```
   </details>
@@ -160,9 +157,15 @@ public class ExampleHandler implements JobHandler {
 ## ZeebeWorker Annotation
 The annotation accepts the following properties, more will be added later:
 
-| Property                    | Default | Description                                                                  |
-|-----------------------------|---------|------------------------------------------------------------------------------|
-| type                        |         | The mandatory name the client subscribes to                          |
+| Property | Description                                                                                               |
+|----------|-----------------------------------------------------------------------------------------------------------|
+| type     | The mandatory the type of jobs to work on.                                                                |
+| timeout  | The optional time for how long a job is exclusively assigned for this worker, e.g "PT15M"                 |
+| maxJobsActive  | The optional maximum number of jobs which will be exclusively activated for this worker at the same time. |
+| requestTimeout | The optional request timeout for activate job request used to poll for new job, e.g. PT20S.         |
+| pollInterval  | The optional maximal interval between polling for new jobs, e.g. PT0.1S for 100ms.                   |
+
+Note: If no value is provided for an optional property then the default will be taken from the configuration as documented below.
 
 ## Configuration
 
@@ -170,12 +173,12 @@ You may use the following properties (typically in application.yml) to configure
 
 | Prefix                | Property                          | Default       | Description                                                                                                                                                       |
 |-----------------------|-----------------------------------|---------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| zeebe.client.cloud    | .cluster-id                       |               | The cluster ID when connecting to Camunda Cloud. Don't set this for a local Zeebe Broker.                                                                         |
-|                       | .client-id                        |               | The client ID to connect to Camunda Cloud. Don't set this for a local Zeebe Broker.                                                                               |
-|                       | .client-secret                    |               | The client secret to connect to Camunda Cloud. Don't set this for a local Zeebe Broker.                                                                           |
-|                       | .region                           | bru-2         | The region of the Camunda Cloud cluster.                                                                                                                          |
-|                       | .gateway-address                  | 0.0.0.0:26500 | The gateway address if you're not connecting to Camunda Cloud. Must be in format host:port.                                                                       |
-|                       | .use-plain-text-connection        | true          | Whether to use plain text or a secure connection. This property is not evaluated if connecting to Camunda Cloud because that will always use a secure connection. |
+| zeebe.client.cloud    | .cluster-id                       |               | The cluster ID when connecting to Camunda Platform 8. Don't set this for a local Zeebe Broker.                                                                    |
+|                       | .client-id                        |               | The client ID to connect to Camunda Platform 8. Don't set this for a local Zeebe Broker.                                                                               |
+|                       | .client-secret                    |               | The client secret to connect to Camunda Platform 8. Don't set this for a local Zeebe Broker.                                                                           |
+|                       | .region                           | bru-2         | The region of the Camunda Platform 8 cluster.                                                                                                                          |
+|                       | .gateway-address                  | 0.0.0.0:26500 | The gateway address if you're not connecting to Camunda Platform 8. Must be in format host:port.                                                                       |
+|                       | .use-plain-text-connection        | true          | Whether to use plain text or a secure connection. This property is not evaluated if connecting to Camunda Platform 8 because that will always use a secure connection. |
 |                       | .default-request-timeout          | PT20S         | The request timeout used if not overridden by the command.                                                                                                        |
 |                       | .default-job-poll-interval        | 100           | The interval which a job worker is periodically polling for new jobs.                                                                                             |
 |                       | .default-job-timeout              | PT5M          | The timeout which is used when none is provided for a job worker.                                                                                                 |
@@ -184,6 +187,18 @@ You may use the following properties (typically in application.yml) to configure
 |                       | .num-job-worker-execution-threads | 1             | The number of threads for invocation of job workers. Setting this value to 0 effectively disables subscriptions and workers.                                      |
 |                       | .keep-alive                       | PT45S         | Time interval between keep alive messages sent to the gateway.                                                                                                    |
 |                       | .ca-certificate-path              | default store | Path to a root CA certificate to be used instead of the certificate in the default keystore.                                                                      |
+
+## Examples
+Here are some example applications:
+* [Example application](https://github.com/tobiasschaefer/micronaut-zeebe-example) which uses the feature.
+* [Internal example application](/micronaut-zeebe-client-example) used during development. Remember that you need to start the [Zeebe Cluster](/micronaut-zeebe-server-example) first.
+
+## Supported JDKs
+
+We officially support the following JDKs:
+* JDK 8 (LTS)
+* JDK 11 (LTS)
+* JDK 17 (LTS)
 
 # 🏆Advanced Topics
 
@@ -394,14 +409,20 @@ The following compatibility matrix shows the officially supported Micronaut and 
 Other combinations might also work but have not been tested.
 
 | Release | Micronaut Framework | Zeebe |
-|---------|-----------|-------|
-| 1.4.0   | 3.3.0     | 1.3.2 |
+|---------|---------------------|-------|
+| 1.9.0   | 3.6.1               | 8.0.5 |
 
 <details>
 <summary>Click to see older releases</summary>
 
 | Release |Micronaut Framework | Zeebe |
 |---------|--------|---------|
+| 1.8.0   | 3.5.2               | 8.0.3 |
+| 1.7.0   | 3.4.1               | 8.0.0 |
+| 1.6.0   | 3.4.0               | 1.3.5 |
+| 1.5.0   | 3.4.0               | 1.3.5 |
+| 1.4.1   | 3.3.4               | 1.3.5 |
+| 1.4.0   | 3.3.0     | 1.3.2 |
 | 1.3.1   | 3.3.0  | 1.3.2   |
 | 1.3.0   | 3.3.0  | 1.3.1   |
 | 1.2.2   | 3.2.7  | 1.3.1   |
