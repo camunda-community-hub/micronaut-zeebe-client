@@ -457,4 +457,4 @@ You can reach us:
 
 This open source project is being developed by [Novatec Consulting GmbH](https://www.novatec-gmbh.de/en/) with the support of the open source community.
 
-![Novatec Consulting GmbH](novatec.jpeg)
+![Novatec Consulting GmbH](novatec.png)
