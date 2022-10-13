@@ -68,7 +68,7 @@ This section describes what needs to be done to use `micronaut-zeebe-client-feat
 The Zeebe integration works with both Gradle and Maven, but we recommend using Gradle because it has better Micronaut Support.
 
 You have the following options to integrate the Zeebe integration:
-* Create a new Micronaut project using [Micronaut Launch](https://micronaut.io/launch?name=jobworker&features=zeebe) and check that the "zeebe" feature is selected.
+* Create a new Micronaut project using [Micronaut Launch](https://micronaut.io/launch?name=jobworker&features=camunda-zeebe) and check that the "camunda-zeebe" feature is selected.
 * Manually add the dependency to a Micronaut project:
   <details>
   <summary>Click to show Gradle configuration</summary>
