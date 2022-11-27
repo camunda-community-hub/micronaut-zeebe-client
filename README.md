@@ -458,5 +458,5 @@ This open source project is being developed by [envite consulting GmbH](https://
 ![envite consulting GmbH](envite-black.png#gh-light-mode-only)
 ![envite consulting GmbH](envite-white.png#gh-dark-mode-only)
 ---
-![Novatec Consulting GmbH](novatec.jpeg)
+![Novatec Consulting GmbH](novatec.jpg)
 ---
