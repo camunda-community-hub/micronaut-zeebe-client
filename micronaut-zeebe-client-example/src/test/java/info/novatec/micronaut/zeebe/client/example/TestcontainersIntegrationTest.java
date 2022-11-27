@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
 class TestcontainersIntegrationTest {
 
     @Container
-    ZeebeContainer zeebeContainer = new ZeebeContainer(DockerImageName.parse("camunda/zeebe:8.1.2"));
+    ZeebeContainer zeebeContainer = new ZeebeContainer(DockerImageName.parse("camunda/zeebe:8.1.4"));
 
     @Test
     @Timeout(value = 5, unit = TimeUnit.MINUTES)
