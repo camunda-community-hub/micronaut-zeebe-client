@@ -75,7 +75,7 @@ You have the following options to integrate the Zeebe integration:
 
   Add the dependency to the build.gradle file:
   ```groovy
-  implementation("info.novatec:micronaut-zeebe-client-feature:1.14.0")
+  implementation("info.novatec:micronaut-zeebe-client-feature:1.15.0")
   ```
   </details>
 
@@ -87,7 +87,7 @@ You have the following options to integrate the Zeebe integration:
   <dependency>
     <groupId>info.novatec</groupId>
     <artifactId>micronaut-zeebe-client-feature</artifactId>
-    <version>1.14.0</version>
+    <version>1.15.0</version>
   </dependency>
   <!-- workaround for https://github.com/camunda-community-hub/micronaut-zeebe-client/issues/88 -->
   <dependency>
@@ -410,13 +410,14 @@ Other combinations might also work but have not been tested.
 
 | Release | Micronaut Framework | Zeebe |
 |---------|---------------------|-------|
-| 1.14.0  | 3.9.0               | 8.2.1 |
+| 1.15.0  | 3.9.4               | 8.2.1 |
 
 <details>
 <summary>Click to see older releases</summary>
 
 | Release |Micronaut Framework | Zeebe |
 |---------|--------|---------|
+| 1.14.0  | 3.9.0               | 8.2.1 |
 | 1.13.0  | 3.9.0               | 8.1.6 |
 | 1.12.0  | 3.8.9               | 8.1.6 |
 | 1.11.0  | 3.8.0               | 8.1.5 |
