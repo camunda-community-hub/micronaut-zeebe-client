@@ -195,7 +195,11 @@ Here are some example applications:
 
 ## Supported JDKs
 
-We officially support the following JDKs:
+The current releases are built with Micronaut 4 and therefore we officially support the following JDKs:
+* JDK 17 (LTS)
+* JDK 21 (LTS)
+
+The lastest release supporting Micronaut 3 is 1.15.0 which supports the following JDKs:
 * JDK 8 (LTS)
 * JDK 11 (LTS)
 * JDK 17 (LTS)

@@ -17,6 +17,8 @@ micronaut {
 dependencies {
     implementation(project(":micronaut-zeebe-client-feature"))
 
+    implementation("io.micronaut.serde:micronaut-serde-jackson")
+
     implementation("javax.annotation:javax.annotation-api")
     runtimeOnly("ch.qos.logback:logback-classic")
 
@@ -32,8 +34,8 @@ application {
 }
 
 java {
-    sourceCompatibility = JavaVersion.toVersion("1.8")
-    targetCompatibility = JavaVersion.toVersion("1.8")
+    sourceCompatibility = JavaVersion.toVersion(javaLanguageVersion)
+    targetCompatibility = JavaVersion.toVersion(javaLanguageVersion)
 }
 
 sourceSets {
