@@ -23,8 +23,9 @@ dependencies {
     api("io.camunda:zeebe-client-java:$zeebeVersion")
 
     runtimeOnly("ch.qos.logback:logback-classic")
+    runtimeOnly("org.yaml:snakeyaml")
 
-    kaptTest platform("io.micronaut:micronaut-bom:$micronautVersion")
+    kaptTest platform("io.micronaut.platform:micronaut-platform:$micronautVersion")
     kapt("io.micronaut:micronaut-inject-java:$micronautVersion")
     testImplementation("io.micronaut.test:micronaut-test-junit5")
     testImplementation("org.assertj:assertj-core")
@@ -32,8 +33,8 @@ dependencies {
 }
 
 java {
-    sourceCompatibility = JavaVersion.toVersion('1.8')
-    targetCompatibility = JavaVersion.toVersion('1.8')
+    sourceCompatibility = JavaVersion.toVersion(javaLanguageVersion)
+    targetCompatibility = JavaVersion.toVersion(javaLanguageVersion)
 }
 
 java {
@@ -43,7 +44,7 @@ java {
 tasks {
     compileTestKotlin {
         kotlinOptions {
-            jvmTarget = "1.8"
+            jvmTarget = javaLanguageVersion
         }
     }
 }
