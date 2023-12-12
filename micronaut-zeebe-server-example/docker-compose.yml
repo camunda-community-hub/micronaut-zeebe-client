@@ -8,7 +8,7 @@ services:
   gateway:
     restart: always
     container_name: gateway
-    image: camunda/zeebe:8.3.4
+    image: camunda/zeebe:8.4.0-alpha2
     environment:
       - ZEEBE_LOG_LEVEL=debug
       - ZEEBE_STANDALONE_GATEWAY=true
@@ -23,7 +23,7 @@ services:
       - zeebe_network
   node0:
     container_name: zeebe_broker_1
-    image: camunda/zeebe:8.3.4
+    image: camunda/zeebe:8.4.0-alpha2
     environment:
       - ZEEBE_LOG_LEVEL=debug
       - ZEEBE_BROKER_CLUSTER_NODEID=0
@@ -35,7 +35,7 @@ services:
       - zeebe_network
   node1:
     container_name: zeebe_broker_2
-    image: camunda/zeebe:8.3.4
+    image: camunda/zeebe:8.4.0-alpha2
     environment:
       - ZEEBE_LOG_LEVEL=debug
       - ZEEBE_BROKER_CLUSTER_NODEID=1
