@@ -50,7 +50,7 @@ public class ZeebeClientFactory {
         return zeebeClient;
     }
 
-    protected ZeebeClientBuilder createZeebeClientBuilder(Configuration configuration, ObjectMapper objectMapper) {
+    protected ZeebeClientBuilder createZeebeClientBuilder(Configuration configuration, @Nullable ObjectMapper objectMapper) {
         ZeebeClientBuilder zeebeClientBuilder = isCloudConfigurationPresent(configuration)
                 ? createCloudClient(configuration)
                 : createDefaultClient(configuration);
@@ -90,7 +90,7 @@ public class ZeebeClientFactory {
 
     protected boolean isCloudConfigurationPresent(Configuration configuration) {
         return configuration.getClusterId().isPresent()
-                && configuration.getClientId().isPresent()
-                && configuration.getClientSecret().isPresent();
+               && configuration.getClientId().isPresent()
+               && configuration.getClientSecret().isPresent();
     }
 }
