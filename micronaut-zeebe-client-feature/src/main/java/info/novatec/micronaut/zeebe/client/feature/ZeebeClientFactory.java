@@ -15,15 +15,22 @@
  */
 package info.novatec.micronaut.zeebe.client.feature;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.camunda.zeebe.client.ZeebeClient;
 import io.camunda.zeebe.client.ZeebeClientBuilder;
 import io.camunda.zeebe.client.ZeebeClientCloudBuilderStep1.ZeebeClientCloudBuilderStep2.ZeebeClientCloudBuilderStep3.ZeebeClientCloudBuilderStep4;
+import io.camunda.zeebe.client.impl.ZeebeObjectMapper;
 import io.micronaut.context.annotation.Factory;
+import jakarta.annotation.Nullable;
 import jakarta.inject.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
+import java.util.Objects;
+
+import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
 
 /**
  * @author Martin Sawilla
@@ -37,17 +44,20 @@ public class ZeebeClientFactory {
     private static final Logger log = LoggerFactory.getLogger(ZeebeClientFactory.class);
 
     @Singleton
-    public ZeebeClient buildClient(Configuration configuration) {
-        ZeebeClient zeebeClient = createZeebeClientBuilder(configuration).build();
+    public ZeebeClient buildClient(Configuration configuration, @Nullable ObjectMapper objectMapper) {
+        ZeebeClient zeebeClient = createZeebeClientBuilder(configuration, objectMapper).build();
         log.info("ZeebeClient is configured to connect to gateway: {}", zeebeClient.getConfiguration().getGatewayAddress());
         return zeebeClient;
     }
 
-    protected ZeebeClientBuilder createZeebeClientBuilder(Configuration configuration) {
+    protected ZeebeClientBuilder createZeebeClientBuilder(Configuration configuration, ObjectMapper objectMapper) {
         ZeebeClientBuilder zeebeClientBuilder = isCloudConfigurationPresent(configuration)
                 ? createCloudClient(configuration)
                 : createDefaultClient(configuration);
 
+        if (Objects.equals(TRUE, configuration.getUseJacksonMapperOfMicronaut().orElse(FALSE)) && objectMapper != null) {
+            zeebeClientBuilder.withJsonMapper(new ZeebeObjectMapper(objectMapper));
+        }
         configuration.getDefaultRequestTimeout().ifPresent(timeout -> zeebeClientBuilder.defaultRequestTimeout(Duration.parse(timeout)));
         configuration.getDefaultJobPollInterval().ifPresent(duration -> zeebeClientBuilder.defaultJobPollInterval(Duration.ofMillis(duration)));
         configuration.getDefaultJobTimeout().ifPresent(timeout -> zeebeClientBuilder.defaultJobTimeout(Duration.parse(timeout)));

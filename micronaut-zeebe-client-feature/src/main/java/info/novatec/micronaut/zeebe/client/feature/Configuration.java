@@ -34,7 +34,7 @@ public interface Configuration {
 
     /**
      * The clusterId when connecting to Camunda Platform 8. Don't set this for a local Zeebe Broker.
-     * @see io.camunda.zeebe.client.ZeebeClientCloudBuilderStep1#withClusterId(String) 
+     * @see io.camunda.zeebe.client.ZeebeClientCloudBuilderStep1#withClusterId(String)
      *
      * @return the clusterId
      */
@@ -42,7 +42,7 @@ public interface Configuration {
 
     /**
      * The clientId to connect to Camunda Platform 8. Don't set this for a local Zeebe Broker.
-     * @see io.camunda.zeebe.client.ZeebeClientCloudBuilderStep1.ZeebeClientCloudBuilderStep2#withClientId(String) 
+     * @see io.camunda.zeebe.client.ZeebeClientCloudBuilderStep1.ZeebeClientCloudBuilderStep2#withClientId(String)
      *
      * @return the the clientId
      */
@@ -50,7 +50,7 @@ public interface Configuration {
 
     /**
      * The clientSecret to connect to Camunda Platform 8. Don't set this for a local Zeebe Broker.
-     * @see io.camunda.zeebe.client.ZeebeClientCloudBuilderStep1.ZeebeClientCloudBuilderStep2.ZeebeClientCloudBuilderStep3#withClientSecret(String) 
+     * @see io.camunda.zeebe.client.ZeebeClientCloudBuilderStep1.ZeebeClientCloudBuilderStep2.ZeebeClientCloudBuilderStep3#withClientSecret(String)
      *
      * @return the name of the clientSecret
      */
@@ -58,7 +58,7 @@ public interface Configuration {
 
     /**
      * The region of the Camunda Platform 8 cluster
-     * @see io.camunda.zeebe.client.ZeebeClientCloudBuilderStep1.ZeebeClientCloudBuilderStep2.ZeebeClientCloudBuilderStep3.ZeebeClientCloudBuilderStep4#withRegion(String) 
+     * @see io.camunda.zeebe.client.ZeebeClientCloudBuilderStep1.ZeebeClientCloudBuilderStep2.ZeebeClientCloudBuilderStep3.ZeebeClientCloudBuilderStep4#withRegion(String)
      *
      * @return the region where your cluster is located
      */
@@ -75,7 +75,7 @@ public interface Configuration {
     /**
      * the default request timeout as ISO 8601 standard formatted String
      * e.g. PT20S for a timeout of 20 seconds
-     * @see io.camunda.zeebe.client.ZeebeClientBuilder#defaultRequestTimeout(Duration) 
+     * @see io.camunda.zeebe.client.ZeebeClientBuilder#defaultRequestTimeout(Duration)
      *
      * @return the default request timeout
      */
@@ -84,7 +84,7 @@ public interface Configuration {
     /**
      * the default job poll interval in milliseconds
      * e.g. 100 for a timeout of 100 milliseconds
-     * @see io.camunda.zeebe.client.ZeebeClientBuilder#defaultJobPollInterval(Duration) 
+     * @see io.camunda.zeebe.client.ZeebeClientBuilder#defaultJobPollInterval(Duration)
      *
      * @return the default job poll interval
      */
@@ -93,7 +93,7 @@ public interface Configuration {
     /**
      * the default job timeout as ISO 8601 standard formatted String
      * e.g. PT5M for a timeout of 5 minutes
-     * @see io.camunda.zeebe.client.ZeebeClientBuilder#defaultJobTimeout(Duration) 
+     * @see io.camunda.zeebe.client.ZeebeClientBuilder#defaultJobTimeout(Duration)
      *
      * @return the default job timeout
      */
@@ -102,7 +102,7 @@ public interface Configuration {
     /**
      * the default message time to live as ISO 8601 standard formatted String
      * e.g. PT1H for a timeout of 1 hour
-     * @see io.camunda.zeebe.client.ZeebeClientBuilder#defaultMessageTimeToLive(Duration) 
+     * @see io.camunda.zeebe.client.ZeebeClientBuilder#defaultMessageTimeToLive(Duration)
      *
      * @return the default message time to live
      */
@@ -110,7 +110,7 @@ public interface Configuration {
 
     /**
      * the default job worker name
-     * @see io.camunda.zeebe.client.ZeebeClientBuilder#defaultJobWorkerName(String) 
+     * @see io.camunda.zeebe.client.ZeebeClientBuilder#defaultJobWorkerName(String)
      *
      * @return the default name of a worker
      */
@@ -118,7 +118,7 @@ public interface Configuration {
 
     /**
      * the gateway address to which the client should connect
-     * @see io.camunda.zeebe.client.ZeebeClientBuilder#gatewayAddress(String) 
+     * @see io.camunda.zeebe.client.ZeebeClientBuilder#gatewayAddress(String)
      *
      * @return the gateway address
      */
@@ -126,7 +126,7 @@ public interface Configuration {
 
     /**
      * the number of threads used to execute workers
-     * @see io.camunda.zeebe.client.ZeebeClientBuilder#numJobWorkerExecutionThreads(int) 
+     * @see io.camunda.zeebe.client.ZeebeClientBuilder#numJobWorkerExecutionThreads(int)
      *
      * @return the count of job worker execution threads
      */
@@ -135,7 +135,7 @@ public interface Configuration {
     /**
      * the interval for keep allive messages to be sent as ISO 8601 standard formatted String
      * e.g. PT45S for 45 seconds
-     * @see io.camunda.zeebe.client.ZeebeClientBuilder#keepAlive(Duration) 
+     * @see io.camunda.zeebe.client.ZeebeClientBuilder#keepAlive(Duration)
      *
      * @return the interval to send keep alive message
      */
@@ -143,9 +143,15 @@ public interface Configuration {
 
     /**
      * the path to a ca certificate
-     * @see io.camunda.zeebe.client.ZeebeClientBuilder#caCertificatePath(String) 
+     * @see io.camunda.zeebe.client.ZeebeClientBuilder#caCertificatePath(String)
      *
      * @return the custom ca certificate path
      */
     Optional<String> getCaCertificatePath();
+
+    /**
+     * Indication whether to pass Micronaut's Jackson Object mapper onto the Zeebe client.
+     * @return yes or no.
+     */
+    Optional<Boolean> getUseJacksonMapperOfMicronaut();
 }
