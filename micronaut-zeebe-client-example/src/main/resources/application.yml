@@ -10,4 +10,4 @@ netty:
 zeebe:
   client:
     cloud:
-      defaultJobWorkerName: novatec-worker
+      default-job-worker-name: novatec-worker
