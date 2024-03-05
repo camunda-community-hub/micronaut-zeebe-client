@@ -8,6 +8,12 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 
+/**
+ * This test verifies that the serialization of {@link java.time.LocalDate} works without any problems by using
+ * Micronauts Jackson {@link com.fasterxml.jackson.databind.ObjectMapper}.
+ *
+ * @author Silvio Wangler
+ */
 @MicronautTest
 @Property(name = "zeebe.client.cloud.use-jackson-mapper-of-micronaut", value = "true")
 public class JacksonObjectMapperActiveTest {
