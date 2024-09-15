@@ -23,7 +23,7 @@ import java.util.Map;
 public class JacksonSerializationTest {
 
     @Container
-    ZeebeContainer zeebeContainer = new ZeebeContainer(DockerImageName.parse("camunda/zeebe:8.3.4"));
+    ZeebeContainer zeebeContainer = new ZeebeContainer(DockerImageName.parse("camunda/zeebe:8.5.0"));
 
     @Test
     public void verifyThatSerialisationWorks() {
@@ -43,7 +43,7 @@ public class JacksonSerializationTest {
     }
 
     @Test
-    public void proofThatSerialisationDoesNotWorks() {
+    public void proofThatSerialisationDoesNotWork() {
 
         try (ApplicationContext applicationContext = ApplicationContext.run(
                 Map.of(
