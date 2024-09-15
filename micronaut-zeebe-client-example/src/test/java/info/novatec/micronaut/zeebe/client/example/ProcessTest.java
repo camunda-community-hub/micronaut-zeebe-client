@@ -20,15 +20,20 @@ import io.camunda.zeebe.client.api.response.ActivateJobsResponse;
 import io.camunda.zeebe.client.api.response.ActivatedJob;
 import io.camunda.zeebe.client.api.response.DeploymentEvent;
 import io.camunda.zeebe.client.api.response.ProcessInstanceEvent;
+import io.camunda.zeebe.process.test.api.RecordStreamSource;
 import io.camunda.zeebe.process.test.assertions.BpmnAssert;
 import io.camunda.zeebe.process.test.assertions.ProcessInstanceAssert;
-import io.camunda.zeebe.process.test.extensions.ZeebeProcessTest;
-import io.camunda.zeebe.process.test.testengine.InMemoryEngine;
-import io.camunda.zeebe.process.test.testengine.RecordStreamSource;
+import io.camunda.zeebe.process.test.engine.InMemoryEngine;
+import io.camunda.zeebe.process.test.extension.ZeebeProcessTest;
 import org.junit.jupiter.api.Test;
+
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 
 @ZeebeProcessTest
 class ProcessTest {
+
+    static final Duration IDLE_STATE_TIMEOUT = Duration.of(10, ChronoUnit.SECONDS);
 
     InMemoryEngine engine;
     ZeebeClient client;
@@ -36,7 +41,7 @@ class ProcessTest {
     RecordStreamSource recordStreamSource;
 
     @Test
-    void workerShouldProcessWork() {
+    void workerShouldProcessWork() throws Exception {
 
         // Deploy process model
         DeploymentEvent deploymentEvent = client.newDeployCommand()
@@ -53,12 +58,12 @@ class ProcessTest {
                 .send()
                 .join();
 
-        engine.waitForIdleState();
+        engine.waitForIdleState(IDLE_STATE_TIMEOUT);
 
         // Verify that process has started
         ProcessInstanceAssert processInstanceAssertions = BpmnAssert.assertThat(event);
         processInstanceAssertions.hasPassedElement("start");
-        processInstanceAssertions.isWaitingAtElement("say_hello");
+        processInstanceAssertions.isWaitingAtElements("say_hello");
 
         // Fetch job: say-hello
         ActivateJobsResponse response = client.newActivateJobsCommand()
@@ -70,7 +75,7 @@ class ProcessTest {
         // Complete job: say-hello
         ActivatedJob activatedJob = response.getJobs().get(0);
         client.newCompleteCommand(activatedJob.getKey()).send().join();
-        engine.waitForIdleState();
+        engine.waitForIdleState(IDLE_STATE_TIMEOUT);
 
         // Fetch job: say-goodbye
         response = client.newActivateJobsCommand()
@@ -82,10 +87,10 @@ class ProcessTest {
         // Complete job: say-goodbye
         activatedJob = response.getJobs().get(0);
         client.newCompleteCommand(activatedJob.getKey()).send().join();
-        engine.waitForIdleState();
+        engine.waitForIdleState(IDLE_STATE_TIMEOUT);
 
         // Verify completed
-        engine.waitForIdleState();
+        engine.waitForIdleState(IDLE_STATE_TIMEOUT);
         processInstanceAssertions.isCompleted();
     }
 }
