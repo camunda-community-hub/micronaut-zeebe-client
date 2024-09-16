@@ -35,5 +35,6 @@ jobs:
           ./gradlew -Pversion=${RELEASE_VERSION} build --warning-mode=all
           ./gradlew -Pversion=${RELEASE_VERSION} -Psigning.password=${SIGNING_PWD} publish --info
         env:
-          OSSRH_PWD: ${{ secrets.OSSRH_PWD }}
+          OSSRH_TOKEN_USER: ${{ secrets.OSSRH_TOKEN_USER }}
+          OSSRH_TOKEN_PWD: ${{ secrets.OSSRH_TOKEN_PWD }}
           SIGNING_PWD: ${{ secrets.SIGNING_PWD }}
