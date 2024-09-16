@@ -49,6 +49,10 @@ sourceSets {
     }
 }
 
+test {
+    environment "ZEEBE_VERSION", project.findProperty("zeebeVersion") ?: "undefined-zeebe-version"
+}
+
 graalvmNative {
     binaries {
         main {

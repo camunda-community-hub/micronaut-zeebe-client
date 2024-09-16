@@ -22,8 +22,10 @@ import java.util.Map;
 @Testcontainers
 public class JacksonSerializationTest {
 
+    private static final String ZEEBE_VERSION = System.getenv("ZEEBE_VERSION");
+
     @Container
-    ZeebeContainer zeebeContainer = new ZeebeContainer(DockerImageName.parse("camunda/zeebe:8.5.0"));
+    ZeebeContainer zeebeContainer = new ZeebeContainer(DockerImageName.parse("camunda/zeebe:%s".formatted(ZEEBE_VERSION)));
 
     @Test
     public void verifyThatSerialisationWorks() {

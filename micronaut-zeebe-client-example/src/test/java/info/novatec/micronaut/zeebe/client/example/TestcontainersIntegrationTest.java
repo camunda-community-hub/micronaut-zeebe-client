@@ -18,8 +18,10 @@ import java.util.concurrent.TimeUnit;
 @Testcontainers
 class TestcontainersIntegrationTest {
 
+    private static final String ZEEBE_VERSION = System.getenv("ZEEBE_VERSION");
+
     @Container
-    ZeebeContainer zeebeContainer = new ZeebeContainer(DockerImageName.parse("camunda/zeebe:8.5.0"));
+    ZeebeContainer zeebeContainer = new ZeebeContainer(DockerImageName.parse("camunda/zeebe:%s".formatted(ZEEBE_VERSION)));
 
     @Test
     @Timeout(value = 5, unit = TimeUnit.MINUTES)
