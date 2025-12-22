@@ -23,7 +23,7 @@ dependencies {
     implementation("javax.annotation:javax.annotation-api")
     runtimeOnly("ch.qos.logback:logback-classic")
 
-    testImplementation("ch.qos.logback:logback-classic:1.5.22") // replaces version 1.2.11 which fails TestcontainersIntegrationTest with No SLF4J providers were found. Defaulting to no-operation (NOP) logger implementation. See https://www.slf4j.org/codes.html#noProviders for further details.
+    testImplementation("ch.qos.logback:logback-classic:1.5.23") // replaces version 1.2.11 which fails TestcontainersIntegrationTest with No SLF4J providers were found. Defaulting to no-operation (NOP) logger implementation. See https://www.slf4j.org/codes.html#noProviders for further details.
     testImplementation("io.zeebe:zeebe-test-container:3.6.5")
     testImplementation("uk.co.real-logic:sbe-tool:1.33.2") //replaces version 1.25.1
     testImplementation("org.testcontainers:junit-jupiter:1.21.4")
